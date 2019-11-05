@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">RA Playlist Maker</string>
+
+    <string name="nothing_here">There is nothing here!</string>
+    <string name="empty_folder">Empty Folder.</string>
+    <string name="folder_icon">Folder Icon</string>
+    <string name="path_chevron">Path Chevron</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

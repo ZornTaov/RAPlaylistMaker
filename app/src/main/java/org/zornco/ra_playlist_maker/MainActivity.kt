@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     fun buttonClick(view: View){
         // Get the .index file of cores for the ABI this device uses
-        val coreList = createTempFile(this@MainActivity, "index", "txt")
+        val coreList = createTempFile(this, "index", "txt")
         // only redownload and cache once a day
         if (TimeUnit.DAYS.convert(Calendar.getInstance().time.time - coreList.lastModified(), TimeUnit.MILLISECONDS)> 1) {
             val task =
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         val list = coreList.readLines()
 
         // Get the info.zip of all cores
-        val infozip = createTempFile(this@MainActivity, "info", "zip")
+        val infozip = createTempFile(this, "info", "zip")
         // only redownload and cache once a day
         if (TimeUnit.DAYS.convert(Calendar.getInstance().time.time - infozip.lastModified(), TimeUnit.MILLISECONDS)> 1) {
 

@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         checkPermission(
             Manifest.permission.INTERNET,
             INTERNET_PERMISSION_CODE)
-
+        binding.textView.text = Build.SUPPORTED_ABIS[0]
     }
 
     fun buttonClick(view: View){
@@ -115,8 +115,8 @@ class MainActivity : AppCompatActivity() {
 
         }
         zipinfo.close()
-        if (coreinfos.count() > 0)
-            Log.d("TAG", "${coreinfos.count()}")
+        //if (coreinfos.count() > 0)
+        //    Log.d("TAG", "${coreinfos.count()}")
 
         // from coreinfos, build systems.json
         val systemList = mutableMapOf<String, JsonClasses.RASystem>()
@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         val gson = Gson()
         val systems = createTempFile(this@MainActivity, "system", "json")
         systems.writeText(gson.toJson(systemList))
-        Log.d("systemList", systemList.count().toString())
+        //Log.d("systemList", systemList.count().toString())
     }
     fun InputStream.toFile(path: String) {
         File(path).outputStream().use { this.copyTo(it) }

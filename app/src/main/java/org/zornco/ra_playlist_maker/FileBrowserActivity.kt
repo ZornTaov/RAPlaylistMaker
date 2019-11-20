@@ -1,6 +1,7 @@
 package org.zornco.ra_playlist_maker
 
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
@@ -18,10 +19,12 @@ import org.zornco.ra_playlist_maker.common.FileUtils.Companion.launchFileIntent
 import com.google.gson.*
 import org.zornco.ra_playlist_maker.Libretro.JsonClasses
 import android.os.Build;
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import org.zornco.ra_playlist_maker.Libretro.Playlist
 import org.zornco.ra_playlist_maker.databinding.FileBrowserBinding
 
-class FileBrowserActivity : AppCompatActivity(), FilesListFragment.OnItemClickListener{
+class FileBrowserActivity : AppCompatActivity(){
     private lateinit var binding : FileBrowserBinding
     private lateinit var drawerLayout: DrawerLayout
     private val backStackManager = BackStackManager()
@@ -35,7 +38,7 @@ class FileBrowserActivity : AppCompatActivity(), FilesListFragment.OnItemClickLi
         window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
         //drawerLayout = binding.drawerLayout
         //val navController = this.findNavController(R.id.myNavHostFragment)
-       // NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+        //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         //NavigationUI.setupWithNavController(binding.navView, navController)
 
         if (savedInstanceState == null) {
@@ -90,38 +93,11 @@ class FileBrowserActivity : AppCompatActivity(), FilesListFragment.OnItemClickLi
     }
 
 
-    override fun onClick(fileModel: FileModel) {
-        if (fileModel.fileType == FileType.FOLDER)
-        {
-            addFileFragment(fileModel)
-        }
-        else
-        {
-            launchFileIntent(fileModel)
-        }
-    }
-
-    override fun onLongClick(fileModel: FileModel) {
-
-    }
-
-    private fun addFileFragment(fileModel: FileModel)
-    {
-        val filesListFragment = FilesListFragment.build { path = fileModel.path }
-        backStackManager.addToStack(fileModel)
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container, filesListFragment)
-        fragmentTransaction.addToBackStack(fileModel.path)
-        fragmentTransaction.commit()
-    }
-
     override fun onBackPressed() {
-        super.onBackPressed()
-        backStackManager.popFromStack()
-        if (supportFragmentManager.backStackEntryCount == 0)
-        {
-            finish()
-        }
+        val fragment = this.supportFragmentManager.findFragmentById(R.id.filesRecyclerView) as? NavHostFragment
+        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? IOnBackPressed
+        currentFragment?.onBackPressed()?.takeIf { !it }?.let{ super.onBackPressed() }
+
     }
 
 

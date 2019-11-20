@@ -3,6 +3,7 @@ package org.zornco.ra_playlist_maker.common
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import java.io.File
 
 class FileUtils
@@ -40,6 +41,12 @@ class FileUtils
         fun Context.launchFileIntent(fileModel: FileModel) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = FileProvider.getUriForFile(this, packageName, File(fileModel.path))
+            intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            startActivity(Intent.createChooser(intent, "Select Application"))
+        }
+        fun Fragment.launchFileIntent(fileModel: FileModel) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = FileProvider.getUriForFile(this.context!!, this.context!!.packageName, File(fileModel.path))
             intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
             startActivity(Intent.createChooser(intent, "Select Application"))
         }

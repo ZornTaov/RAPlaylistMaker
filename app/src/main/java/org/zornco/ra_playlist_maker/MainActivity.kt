@@ -13,8 +13,15 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.google.gson.Gson
 import org.zornco.ra_playlist_maker.Libretro.JsonClasses
+import org.zornco.ra_playlist_maker.common.FileModel
+import org.zornco.ra_playlist_maker.common.FileType
+import org.zornco.ra_playlist_maker.common.FileUtils.Companion.launchFileIntent
 import org.zornco.ra_playlist_maker.databinding.ActivityMainBinding
 import java.io.*
 import java.lang.ref.WeakReference
@@ -25,20 +32,26 @@ import java.util.concurrent.TimeUnit
 import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FilesListFragment.OnItemClickListener {
     lateinit var binding : ActivityMainBinding
+    private lateinit var drawerLayout: DrawerLayout
     private val STORAGE_PERMISSION_CODE = 101
     private val INTERNET_PERMISSION_CODE = 102
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
         checkPermission(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             STORAGE_PERMISSION_CODE)
         checkPermission(
             Manifest.permission.INTERNET,
             INTERNET_PERMISSION_CODE)
-        binding.textView.text = Build.SUPPORTED_ABIS[0]
+        //binding.textView.text = Build.SUPPORTED_ABIS[0]
+        drawerLayout = binding.drawerLayout
+        val navController = this.findNavController(R.id.myNavHostFragment)
+        //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+        NavigationUI.setupWithNavController(binding.navView, navController)
     }
 
     fun buttonClick(view: View){
@@ -201,6 +214,35 @@ class MainActivity : AppCompatActivity() {
             else -> if (externalCache.freeSpace > internalCache.freeSpace) externalCache else internalCache
         }
         return File(cacheDir, "$name.$type")
+    }
+
+    override fun onClick(fileModel: FileModel) {
+        val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
+        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? FilesListFragment.OnItemClickListener
+        currentFragment?.onClick(fileModel)
+        Log.d("TAG", "${fragment} path")
+    }
+
+    override fun onLongClick(fileModel: FileModel) {
+
+    }
+    private fun addFileFragment(fileModel: FileModel)
+    {
+        Toast.makeText(this, "${fileModel.path}", Toast.LENGTH_SHORT).show()
+//        val filesListFragment = FilesListFragment.build { path = fileModel.path }
+//        backStackManager.addToStack(fileModel)
+//        val fragmentTransaction = supportFragmentManager.beginTransaction()
+//        fragmentTransaction.replace(R.id.container, filesListFragment)
+//        fragmentTransaction.addToBackStack(fileModel.path)
+//        fragmentTransaction.commit()
+    }
+
+    override fun onBackPressed() {
+        val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
+        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? IOnBackPressed
+        currentFragment?.onBackPressed()?.takeIf { !it }?.let{ super.onBackPressed(); this.finish() }
+        Log.d("TAG", "w path")
+
     }
     companion object {
         // download buffer size

@@ -2,47 +2,28 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-
-
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_width="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
+            </androidx.appcompat.widget.Toolbar>
 
-            android:layout_height="192dp"
-            android:layout_width="match_parent">
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:toolbarId="@+id/toolbar"
-                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-
-                app:contentScrim="?attr/colorPrimary">
-
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_width="match_parent">
-
-                </androidx.appcompat.widget.Toolbar>
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-7dp"
-                    android:backgroundTint="#FFFFFF"
-                    android:max="100"
-                    android:progressDrawable="@drawable/progress_states"
-                    android:visibility="gone" />
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-7dp"
+                android:backgroundTint="#FFFFFF"
+                android:max="100"
+                android:progressDrawable="@drawable/progress_states"
+                android:visibility="gone" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -56,26 +37,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <Button
-                    android:id="@+id/button2"
-                    android:onClick="buttonClick"
+
+                <fragment
+                    android:id="@+id/myNavHostFragment"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Button" />
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" /></LinearLayout>
+                    app:defaultNavHost="true"
+                    app:navGraph="@navigation/navigation" />
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_height="wrap_content"
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navView"
             android:layout_width="wrap_content"
-            android:src="@android:drawable/ic_input_add"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp" />
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_header"
+            app:menu="@menu/navdrawer_menu" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

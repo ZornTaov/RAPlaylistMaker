@@ -1,40 +1,37 @@
-package org.zornco.ra_playlist_maker
+package org.zornco.ra_playlist_maker.file_browser
 
-import android.Manifest
-import android.app.Activity
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import org.zornco.ra_playlist_maker.common.FileModel
 import org.zornco.ra_playlist_maker.common.FileType
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.zornco.ra_playlist_maker.common.FileUtils.Companion.launchFileIntent
 import com.google.gson.*
 import org.zornco.ra_playlist_maker.Libretro.JsonClasses
 import android.os.Build;
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import org.zornco.ra_playlist_maker.Libretro.Playlist
+import org.zornco.ra_playlist_maker.Libretro.PlaylistLoader
+import org.zornco.ra_playlist_maker.R
+import org.zornco.ra_playlist_maker.common.BackStackManager
+import org.zornco.ra_playlist_maker.common.BreadcrumbRecyclerAdapter
 import org.zornco.ra_playlist_maker.databinding.FileBrowserBinding
 
 class FileBrowserActivity : AppCompatActivity(){
     private lateinit var binding : FileBrowserBinding
     private lateinit var drawerLayout: DrawerLayout
-    private val backStackManager = BackStackManager()
-    private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter
+    private val backStackManager = BackStackManager<FileModel>()
+    private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<FileModel>
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.file_browser)
+        binding = DataBindingUtil.setContentView(this,
+            R.layout.file_browser
+        )
         window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
         //drawerLayout = binding.drawerLayout
         //val navController = this.findNavController(R.id.myNavHostFragment)
@@ -42,9 +39,10 @@ class FileBrowserActivity : AppCompatActivity(){
         //NavigationUI.setupWithNavController(binding.navView, navController)
 
         if (savedInstanceState == null) {
-            val filesListFragment = FilesListFragment.build {
-                path = Environment.getExternalStorageDirectory().absolutePath
-            }
+            val filesListFragment =
+                FilesListFragment.build {
+                    path = Environment.getExternalStorageDirectory().absolutePath
+                }
 
             supportFragmentManager.beginTransaction()
                 .add(R.id.container, filesListFragment)
@@ -54,11 +52,11 @@ class FileBrowserActivity : AppCompatActivity(){
         initViews()
         initBackStack()
         val gson = Gson()
-        val systemList: List<JsonClasses.RASystem> = gson.fromJson(Playlist.loadJSONFromAsset(this, "systems.json"), Array<JsonClasses.RASystem>::class.java).toList()
+        val systemList: List<JsonClasses.RASystem> = gson.fromJson(PlaylistLoader.loadJSONFromAsset(this, "systems.json"), Array<JsonClasses.RASystem>::class.java).toList()
         val count = systemList.count()
         val build = Build.SUPPORTED_ABIS[0]
 
-        /*val json:JSONArray = Playlist.load(this)
+        /*val json:JSONArray = PlaylistLoader.load(this)
         val text = findViewById<TextView>(R.id.textview)
         text.text = json.length().toString()*/
     }
@@ -68,7 +66,8 @@ class FileBrowserActivity : AppCompatActivity(){
         setSupportActionBar(binding.toolbar)
 
         binding.breadcrumbRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        mBreadcrumbRecyclerAdapter = BreadcrumbRecyclerAdapter()
+        mBreadcrumbRecyclerAdapter =
+            BreadcrumbRecyclerAdapter()
         binding.breadcrumbRecyclerView.adapter = mBreadcrumbRecyclerAdapter
         mBreadcrumbRecyclerAdapter.onItemClickListener = {
             supportFragmentManager.popBackStack(it.path, 2)

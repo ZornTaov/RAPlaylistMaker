@@ -3,11 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/fileBrowserFragment">
+    app:startDestination="@id/playlistFragment">
 
     <fragment
         android:id="@+id/fileBrowserFragment"
-        android:name="org.zornco.ra_playlist_maker.FileBrowserFragment"
+        android:name="org.zornco.ra_playlist_maker.file_browser.FileBrowserFragment"
         android:label="fragment_file_browser"
-        tools:layout="@layout/fragment_file_browser" />
+        tools:layout="@layout/fragment_file_browser" >
+        <action
+            android:id="@+id/action_fileBrowserFragment_to_entryEditorFragment"
+            app:destination="@id/entryEditorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/systemsFragment"
+        android:name="org.zornco.ra_playlist_maker.systems.SystemsFragment"
+        android:label="fragment_systems" >
+        <action
+            android:id="@+id/action_systemsFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/entryEditorFragment"
+        android:name="org.zornco.ra_playlist_maker.Playlist.EntryEditorFragment"
+        android:label="fragment_entry_editor"
+        tools:layout="@layout/fragment_entry_editor" />
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="org.zornco.ra_playlist_maker.systems.PlaylistFragment"
+        android:label="PlaylistFragment" >
+        <action
+            android:id="@+id/action_playlistFragment_to_fileBrowserFragment"
+            app:destination="@id/fileBrowserFragment" />
+        <action
+            android:id="@+id/action_playlistFragment_to_entryEditorFragment"
+            app:destination="@id/entryEditorFragment" />
+    </fragment>
 </navigation>

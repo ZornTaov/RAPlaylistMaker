@@ -1,4 +1,4 @@
-package org.zornco.ra_playlist_maker
+package org.zornco.ra_playlist_maker.file_browser
 
 import androidx.core.content.FileProvider
 

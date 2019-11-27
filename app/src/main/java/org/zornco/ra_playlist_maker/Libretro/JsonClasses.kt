@@ -2,19 +2,28 @@ package org.zornco.ra_playlist_maker.Libretro
 
 class JsonClasses {
     data class RASystem(
-        val name: String,
-        var cores: MutableList<String>,
-        var system: MutableList<String>,
-        var allExt: MutableList<String>,
-        var systemExt: MutableList<String>
+        val name: String = "",
+        var cores: MutableList<String> = mutableListOf(),
+        var system: MutableList<String> = mutableListOf(),
+        var allExt: MutableList<String> = mutableListOf(),
+        var systemExt: MutableList<String> = mutableListOf()
+    )
+    data class RAPlaylistEntry(
+        var path: String = "",
+        var label: String = "",
+        var core_path: String = "",
+        var core_name: String = "",
+        var crc32: String = "",
+        var db_name: String = ""
     )
     data class RAPlaylist(
-        var path: String,
-        var label: String,
-        var core_path: String,
-        var core_name: String,
-        var crc32: String,
-        var db_name: String
+        var version: String = "1.2",
+        var default_core_path: String = "",
+        var default_core_name: String = "",
+        var label_display_mode: Int = 0,
+        var right_thumbnail_mode: Int = 0,
+        var left_thumbnail_mode: Int = 0,
+        var items: MutableList<RAPlaylistEntry>
     )
 
     data class CoreInfo(val map: Map<String, Any?>) {

@@ -1,4 +1,4 @@
-package org.zornco.ra_playlist_maker
+package org.zornco.ra_playlist_maker.file_browser
 
 import android.content.Context
 import android.os.Bundle
@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_files_list.*
+import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.common.FileModel
 import org.zornco.ra_playlist_maker.common.FileUtils.Companion.getFileModelsFromFiles
 import org.zornco.ra_playlist_maker.common.FileUtils.Companion.getFilesFromPath

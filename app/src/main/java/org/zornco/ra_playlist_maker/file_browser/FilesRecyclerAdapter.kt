@@ -1,10 +1,11 @@
-package org.zornco.ra_playlist_maker
+package org.zornco.ra_playlist_maker.file_browser
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_recycler_file.view.*
+import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.common.FileModel
 import org.zornco.ra_playlist_maker.common.FileType
 

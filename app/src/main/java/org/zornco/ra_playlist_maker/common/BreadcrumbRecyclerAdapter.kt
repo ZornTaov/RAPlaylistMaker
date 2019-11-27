@@ -1,17 +1,17 @@
-package org.zornco.ra_playlist_maker
+package org.zornco.ra_playlist_maker.common
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_recycler_breadcrumb.view.*
-import org.zornco.ra_playlist_maker.common.FileModel
+import org.zornco.ra_playlist_maker.R
 
-class BreadcrumbRecyclerAdapter : RecyclerView.Adapter<BreadcrumbRecyclerAdapter.ViewHolder>() {
+class BreadcrumbRecyclerAdapter<T> : RecyclerView.Adapter<BreadcrumbRecyclerAdapter<T>.ViewHolder>() {
 
-    var onItemClickListener: ((FileModel) -> Unit)? = null
+    var onItemClickListener: ((T) -> Unit)? = null
 
-    var files = listOf<FileModel>()
+    var files = listOf<T>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recycler_breadcrumb, parent, false)
@@ -22,7 +22,7 @@ class BreadcrumbRecyclerAdapter : RecyclerView.Adapter<BreadcrumbRecyclerAdapter
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindView(position)
 
-    fun updateData(files: List<FileModel>) {
+    fun updateData(files: List<T>) {
         this.files = files
         notifyDataSetChanged()
     }
@@ -39,7 +39,7 @@ class BreadcrumbRecyclerAdapter : RecyclerView.Adapter<BreadcrumbRecyclerAdapter
 
         fun bindView(position: Int) {
             val file = files[position]
-            itemView.nameTextView.text = file.name
+            itemView.nameTextView.text = if (file is FileModel) file.name else ""
         }
     }
 }

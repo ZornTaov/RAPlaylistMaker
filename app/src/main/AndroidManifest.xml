@@ -26,12 +26,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FileBrowserActivity"
+            android:name=".file_browser.FileBrowserActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <provider
-            android:name=".GenericFileProvider"
+            android:name=".file_browser.GenericFileProvider"
             android:authorities="org.zornco.ra_playlist_maker"
             android:exported="false"
             android:grantUriPermissions="true">

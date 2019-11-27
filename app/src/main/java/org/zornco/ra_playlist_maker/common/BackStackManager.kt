@@ -1,16 +1,15 @@
-package org.zornco.ra_playlist_maker
+package org.zornco.ra_playlist_maker.common
 
-import org.zornco.ra_playlist_maker.common.FileModel
 
-class BackStackManager
+class BackStackManager<T>
 {
-    private var files = mutableListOf<FileModel>()
-    var onStackChangeListener: ((List<FileModel>) -> Unit)? = null
+    private var files = mutableListOf<T>()
+    var onStackChangeListener: ((List<T>) -> Unit)? = null
 
-    val top:FileModel
+    val top:T
         get() = files[files.size - 1]
 
-    fun addToStack(fileModel: FileModel)
+    fun addToStack(fileModel: T)
     {
         files.add(fileModel)
         onStackChangeListener?.invoke(files)
@@ -24,7 +23,7 @@ class BackStackManager
         }
         onStackChangeListener?.invoke(files)
     }
-    fun popFromStackTill(fileModel: FileModel)
+    fun popFromStackTill(fileModel: T)
     {
         files = files.subList(0,files.indexOf(fileModel)+1)
         onStackChangeListener?.invoke(files)

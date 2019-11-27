@@ -1,26 +1,23 @@
 package org.zornco.ra_playlist_maker.Libretro
 
 import android.content.Context
-import org.json.JSONArray
+import com.google.gson.Gson
+import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
 
-class Playlist {
+class PlaylistLoader {
     companion object {
-        fun load(context: Context): JSONArray {
-            val jsonObj = JSONArray(
-                loadJSONFromAsset(
-                    context,
-                    "systems.json"
-                )
-            )
-            return jsonObj
+        fun loadPlaylist(context: Context, path:String ): List<JsonClasses.RAPlaylistEntry> {
+            val gson = Gson()
+            return gson.fromJson(loadJSONFromAsset(context, path), JsonClasses.RAPlaylist::class.java).items
         }
 
         fun loadJSONFromAsset(context: Context, file: String): String? {
             var json: String?
             try {
-                val iStream = context.assets.open(file)
+                val fil = File(file)
+                val iStream = fil.inputStream()
                 val size = iStream.available()
                 val buffer = ByteArray(size)
                 iStream.read(buffer)

@@ -1,4 +1,4 @@
-package org.zornco.ra_playlist_maker.Playlist
+package org.zornco.ra_playlist_maker.playlist
 
 
 import android.os.Bundle
@@ -8,9 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import org.zornco.ra_playlist_maker.R
 
-/**
- * A simple [Fragment] subclass.
- */
 class EntryEditorFragment : Fragment() {
 
     override fun onCreateView(

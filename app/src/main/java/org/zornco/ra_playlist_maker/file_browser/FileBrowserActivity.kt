@@ -10,10 +10,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.*
-import org.zornco.ra_playlist_maker.Libretro.JsonClasses
-import android.os.Build;
+import org.zornco.ra_playlist_maker.libretro.JsonClasses
+import android.os.Build
 import androidx.navigation.fragment.NavHostFragment
-import org.zornco.ra_playlist_maker.Libretro.PlaylistLoader
+import org.zornco.ra_playlist_maker.libretro.PlaylistLoader
 import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.common.BackStackManager
 import org.zornco.ra_playlist_maker.common.BreadcrumbRecyclerAdapter

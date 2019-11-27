@@ -1,4 +1,4 @@
-package org.zornco.ra_playlist_maker.systems
+package org.zornco.ra_playlist_maker.playlist
 
 
 import android.content.Context
@@ -9,25 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_playlist_list.*
-import org.zornco.ra_playlist_maker.Libretro.JsonClasses
-import org.zornco.ra_playlist_maker.Libretro.PlaylistLoader
+import org.zornco.ra_playlist_maker.libretro.JsonClasses
+import org.zornco.ra_playlist_maker.libretro.PlaylistLoader
 import org.zornco.ra_playlist_maker.MainActivity
 import org.zornco.ra_playlist_maker.R
-import java.lang.Exception
+import org.zornco.ra_playlist_maker.common.OnItemClickListener
 
-/**
- * A simple [Fragment] subclass.
- */
 class PlaylistListFragment : Fragment() {
 
     private lateinit var mFilesAdapter: PlaylistRecyclerAdapter
     private lateinit var mCallback: OnItemClickListener
-
-    interface OnItemClickListener {
-        fun onClick(playlistModel: JsonClasses.RAPlaylistEntry)
-
-        fun onLongClick(playlistModel: JsonClasses.RAPlaylistEntry)
-    }
 
     companion object {
         private const val ARG_PATH: String = "org.zornco.ra_playlist_maker.systems.path"

@@ -1,4 +1,4 @@
-package org.zornco.ra_playlist_maker.Libretro
+package org.zornco.ra_playlist_maker.libretro
 
 import android.content.Context
 import com.google.gson.Gson

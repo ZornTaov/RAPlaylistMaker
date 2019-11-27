@@ -10,9 +10,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_files_list.*
 import org.zornco.ra_playlist_maker.R
-import org.zornco.ra_playlist_maker.common.FileModel
 import org.zornco.ra_playlist_maker.common.FileUtils.Companion.getFileModelsFromFiles
 import org.zornco.ra_playlist_maker.common.FileUtils.Companion.getFilesFromPath
+import org.zornco.ra_playlist_maker.common.OnItemClickListener
 import java.lang.Exception
 
 class FilesListFragment : Fragment() {
@@ -20,11 +20,6 @@ class FilesListFragment : Fragment() {
     private lateinit var PATH: String
     private lateinit var mCallback: OnItemClickListener
 
-    interface OnItemClickListener {
-        fun onClick(fileModel: FileModel)
-
-        fun onLongClick(fileModel: FileModel)
-    }
 
     companion object {
         private const val ARG_PATH: String = "org.zornco.ra_playlist_maker.fileslist.path"

@@ -12,18 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.zornco.ra_playlist_maker.R
-import org.zornco.ra_playlist_maker.common.BackStackManager
-import org.zornco.ra_playlist_maker.common.BreadcrumbRecyclerAdapter
-import org.zornco.ra_playlist_maker.common.FileModel
-import org.zornco.ra_playlist_maker.common.FileType
+import org.zornco.ra_playlist_maker.common.*
 import org.zornco.ra_playlist_maker.common.FileUtils.Companion.launchFileIntent
 import org.zornco.ra_playlist_maker.databinding.FragmentFileBrowserBinding
 
-/**
- * A simple [Fragment] subclass.
- */
-class FileBrowserFragment : Fragment(), IOnBackPressed,
-    FilesListFragment.OnItemClickListener {
+class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
     private lateinit var binding : FragmentFileBrowserBinding
     private val backStackManager = BackStackManager<FileModel>()
     private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<FileModel>
@@ -82,7 +75,8 @@ class FileBrowserFragment : Fragment(), IOnBackPressed,
 
 
 
-    override fun onClick(fileModel: FileModel) {
+    override fun onClick(obj: Any) {
+        val fileModel = obj as FileModel
         if (fileModel.fileType == FileType.FOLDER)
         {
             addFileFragment(fileModel)
@@ -94,7 +88,7 @@ class FileBrowserFragment : Fragment(), IOnBackPressed,
         Log.d("TAG", "${fileModel.path}")
     }
 
-    override fun onLongClick(fileModel: FileModel) {
+    override fun onLongClick(obj: Any) {
 
     }
 

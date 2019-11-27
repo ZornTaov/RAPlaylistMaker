@@ -24,12 +24,12 @@
     </fragment>
     <fragment
         android:id="@+id/entryEditorFragment"
-        android:name="org.zornco.ra_playlist_maker.Playlist.EntryEditorFragment"
+        android:name="org.zornco.ra_playlist_maker.playlist.EntryEditorFragment"
         android:label="fragment_entry_editor"
         tools:layout="@layout/fragment_entry_editor" />
     <fragment
         android:id="@+id/playlistFragment"
-        android:name="org.zornco.ra_playlist_maker.systems.PlaylistFragment"
+        android:name="org.zornco.ra_playlist_maker.playlist.PlaylistFragment"
         android:label="PlaylistFragment" >
         <action
             android:id="@+id/action_playlistFragment_to_fileBrowserFragment"

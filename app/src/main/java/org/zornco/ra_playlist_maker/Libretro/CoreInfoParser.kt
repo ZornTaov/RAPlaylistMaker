@@ -1,10 +1,9 @@
-package org.zornco.ra_playlist_maker.Libretro
+package org.zornco.ra_playlist_maker.libretro
 
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Build
 import android.view.View
-import com.google.gson.Gson
 import org.zornco.ra_playlist_maker.MainActivity
 import java.io.*
 import java.lang.ref.WeakReference

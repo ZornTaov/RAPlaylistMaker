@@ -1,4 +1,4 @@
-package org.zornco.ra_playlist_maker.systems
+package org.zornco.ra_playlist_maker.playlist
 
 
 import android.os.Bundle
@@ -11,17 +11,15 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.zornco.ra_playlist_maker.Libretro.JsonClasses
+import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
 import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.databinding.FragmentPlaylistBinding
 import org.zornco.ra_playlist_maker.common.BackStackManager
 import org.zornco.ra_playlist_maker.common.BreadcrumbRecyclerAdapter
+import org.zornco.ra_playlist_maker.common.OnItemClickListener
 
-/**
- * A simple [Fragment] subclass.
- */
-class PlaylistFragment : Fragment(), PlaylistListFragment.OnItemClickListener {
+class PlaylistFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentPlaylistBinding
     private val backStackManager =
         BackStackManager<JsonClasses.RAPlaylistEntry>()
@@ -79,11 +77,13 @@ class PlaylistFragment : Fragment(), PlaylistListFragment.OnItemClickListener {
             binding.breadcrumbRecyclerView.smoothScrollToPosition(files.size - 1)
         }
     }
-    override fun onClick(playlistModel: JsonClasses.RAPlaylistEntry) {
+    override fun onClick(obj: Any) {
+        val playlistModel = obj as JsonClasses.RAPlaylistEntry
         Log.d("TAG", "${playlistModel.label}")
+
     }
 
-    override fun onLongClick(playlistModel: JsonClasses.RAPlaylistEntry) {
+    override fun onLongClick(obj: Any) {
 
     }
 

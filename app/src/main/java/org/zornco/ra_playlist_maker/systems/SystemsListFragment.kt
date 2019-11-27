@@ -9,26 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_systems_list.*
-import org.zornco.ra_playlist_maker.Libretro.CoreInfoParser
-import org.zornco.ra_playlist_maker.Libretro.JsonClasses
+import org.zornco.ra_playlist_maker.libretro.CoreInfoParser
+import org.zornco.ra_playlist_maker.libretro.JsonClasses
 import org.zornco.ra_playlist_maker.MainActivity
 import org.zornco.ra_playlist_maker.R
+import org.zornco.ra_playlist_maker.common.OnItemClickListener
 import org.zornco.ra_playlist_maker.common.getSystemName
 import java.lang.Exception
 
-/**
- * A simple [Fragment] subclass.
- */
 class SystemsListFragment : Fragment() {
 
     private lateinit var mFilesAdapter: SystemsRecyclerAdapter
     private lateinit var mCallback: OnItemClickListener
-
-    interface OnItemClickListener {
-        fun onClick(systemModel: JsonClasses.RASystem)
-
-        fun onLongClick(systemModel: JsonClasses.RASystem)
-    }
 
     companion object {
         private const val ARG_PATH: String = "org.zornco.ra_playlist_maker.systems.path"
@@ -38,8 +30,8 @@ class SystemsListFragment : Fragment() {
     class Builder {
         var path: String = ""
 
-        fun build(): PlaylistListFragment {
-            val fragment = PlaylistListFragment()
+        fun build(): SystemsListFragment {
+            val fragment = SystemsListFragment()
             val args = Bundle()
             args.putString(ARG_PATH, path)
             fragment.arguments = args

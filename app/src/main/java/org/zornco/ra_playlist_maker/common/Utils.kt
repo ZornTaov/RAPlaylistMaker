@@ -1,11 +1,11 @@
 package org.zornco.ra_playlist_maker.common
 
-import org.zornco.ra_playlist_maker.Libretro.JsonClasses
+import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
-interface OnItemClickListener<T> {
-    fun onClick(fileModel: T)
+interface OnItemClickListener {
+    fun onClick(obj: Any)
 
-    fun onLongClick(fileModel: T)
+    fun onLongClick(obj: Any)
 }
 
 fun getSystemName(fileModel: JsonClasses.RASystem): String {

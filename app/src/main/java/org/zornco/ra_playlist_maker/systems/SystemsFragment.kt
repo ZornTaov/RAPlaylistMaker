@@ -11,17 +11,15 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.zornco.ra_playlist_maker.Libretro.JsonClasses
+import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
 import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.databinding.FragmentSystemsBinding
 import org.zornco.ra_playlist_maker.common.BackStackManager
 import org.zornco.ra_playlist_maker.common.BreadcrumbRecyclerAdapter
+import org.zornco.ra_playlist_maker.common.OnItemClickListener
 
-/**
- * A simple [Fragment] subclass.
- */
-class SystemsFragment : Fragment(), SystemsListFragment.OnItemClickListener {
+class SystemsFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentSystemsBinding
     private val backStackManager =
         BackStackManager<JsonClasses.RASystem>()
@@ -79,11 +77,14 @@ class SystemsFragment : Fragment(), SystemsListFragment.OnItemClickListener {
             binding.breadcrumbRecyclerView.smoothScrollToPosition(files.size - 1)
         }
     }
-    override fun onClick(systemModel: JsonClasses.RASystem) {
+    override fun onClick(obj: Any) {
+
+        val systemModel = obj as JsonClasses.RASystem
         Log.d("TAG", "${systemModel.name}")
+
     }
 
-    override fun onLongClick(systemModel: JsonClasses.RASystem) {
+    override fun onLongClick(obj: Any) {
 
     }
 

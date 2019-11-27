@@ -13,19 +13,13 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import org.zornco.ra_playlist_maker.file_browser.FilesListFragment
 import org.zornco.ra_playlist_maker.file_browser.IOnBackPressed
-import org.zornco.ra_playlist_maker.Libretro.JsonClasses
-import org.zornco.ra_playlist_maker.common.FileModel
+import org.zornco.ra_playlist_maker.common.OnItemClickListener
 import org.zornco.ra_playlist_maker.databinding.ActivityMainBinding
-import org.zornco.ra_playlist_maker.systems.PlaylistListFragment
-import org.zornco.ra_playlist_maker.systems.SystemsListFragment
 import java.io.*
 
 class MainActivity : AppCompatActivity(),
-    FilesListFragment.OnItemClickListener,
-    PlaylistListFragment.OnItemClickListener,
-    SystemsListFragment.OnItemClickListener
+    OnItemClickListener
 {
 
     lateinit var binding : ActivityMainBinding
@@ -87,42 +81,16 @@ class MainActivity : AppCompatActivity(),
     }
 
 
-    override fun onClick(fileModel: FileModel) {
+    override fun onClick(obj: Any) {
         val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
-        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? FilesListFragment.OnItemClickListener
-        currentFragment?.onClick(fileModel)
+        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? OnItemClickListener
+        currentFragment?.onClick(obj)
     }
 
-    override fun onLongClick(fileModel: FileModel) {
+    override fun onLongClick(obj: Any) {
         val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
-        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? FilesListFragment.OnItemClickListener
-        currentFragment?.onLongClick(fileModel)
-
-    }
-    override fun onClick(systemModel: JsonClasses.RASystem) {
-        val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
-        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? SystemsListFragment.OnItemClickListener
-        currentFragment?.onClick(systemModel)
-    }
-
-    override fun onLongClick(systemModel: JsonClasses.RASystem) {
-        val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
-        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? SystemsListFragment.OnItemClickListener
-        currentFragment?.onLongClick(systemModel)
-
-    }
-
-    override fun onClick(playlistModel: JsonClasses.RAPlaylistEntry) {
-        val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
-        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? PlaylistListFragment.OnItemClickListener
-        currentFragment?.onClick(playlistModel)
-
-    }
-
-    override fun onLongClick(playlistModel: JsonClasses.RAPlaylistEntry) {
-        val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
-        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? PlaylistListFragment.OnItemClickListener
-        currentFragment?.onLongClick(playlistModel)
+        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? OnItemClickListener
+        currentFragment?.onLongClick(obj)
 
     }
 

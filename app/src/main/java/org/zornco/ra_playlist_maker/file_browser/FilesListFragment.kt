@@ -89,7 +89,8 @@ class FilesListFragment : Fragment() {
             emptyFolderLayout.visibility = View.INVISIBLE
         }
 
-        mFilesAdapter.updateData(files)
+        val extensions:List<String> = listOf("smc")
+        mFilesAdapter.updateData(files, extensions)
     }
 
 }

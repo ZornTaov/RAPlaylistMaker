@@ -25,8 +25,11 @@ class FilesRecyclerAdapter : RecyclerView.Adapter<FilesRecyclerAdapter.ViewHolde
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindView(position)
 
-    fun updateData(filesList: List<FileModel>) {
-        this.filesList = filesList
+    fun updateData(filesList: List<FileModel>, extensions: List<String>) {
+        this.filesList = filesList.filter { it.fileType == FileType.FOLDER
+                || it.fileType == FileType.FILE && extensions.isEmpty()
+                || extensions.isNotEmpty() && extensions.contains(it.extension) }
+
         notifyDataSetChanged()
     }
 

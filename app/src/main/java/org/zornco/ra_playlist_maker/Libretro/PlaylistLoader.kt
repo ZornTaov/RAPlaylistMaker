@@ -8,13 +8,23 @@ import java.nio.charset.Charset
 
 class PlaylistLoader {
     companion object {
-        fun loadPlaylist(context: Context, path:String ): List<JsonClasses.RAPlaylistEntry> {
+        @Throws(Exception::class)
+        fun loadPlaylist(context: Context, path:String ): JsonClasses.RAPlaylist {
             val gson = Gson()
-            return gson.fromJson(loadJSONFromAsset(context, path), JsonClasses.RAPlaylist::class.java).items
+            try {
+                val json = loadJSONFromAsset(context, path)
+                return gson.fromJson(json, JsonClasses.RAPlaylist::class.java)
+            }
+            catch (e:Exception)
+            {
+                throw e
+            }
+
         }
 
+        @Throws(IOException::class)
         fun loadJSONFromAsset(context: Context, file: String): String? {
-            var json: String?
+            val json: String?
             try {
                 val fil = File(file)
                 val iStream = fil.inputStream()
@@ -24,8 +34,7 @@ class PlaylistLoader {
                 iStream.close()
                 json = String(buffer, Charset.defaultCharset())
             } catch (ex: IOException) {
-                ex.printStackTrace()
-                return null
+                throw ex
             }
 
             return json

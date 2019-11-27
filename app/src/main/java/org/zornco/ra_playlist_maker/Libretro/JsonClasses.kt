@@ -23,7 +23,7 @@ class JsonClasses {
         var label_display_mode: Int = 0,
         var right_thumbnail_mode: Int = 0,
         var left_thumbnail_mode: Int = 0,
-        var items: MutableList<RAPlaylistEntry>
+        var items: MutableList<RAPlaylistEntry> = mutableListOf()
     )
 
     data class CoreInfo(val map: Map<String, Any?>) {

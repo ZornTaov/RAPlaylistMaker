@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
@@ -81,7 +82,9 @@ class SystemsFragment : Fragment(), OnItemClickListener {
 
         val systemModel = obj as JsonClasses.RASystem
         Log.d("TAG", "${systemModel.name}")
-
+        val amount = systemModel.system[0]
+        val action = SystemsFragmentDirections.actionSystemsFragmentToPlaylistFragment(amount)
+        this.view!!.findNavController().navigate(action)
     }
 
     override fun onLongClick(obj: Any) {

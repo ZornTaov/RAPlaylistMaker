@@ -33,10 +33,11 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_playlist, container, false)
+        val args = PlaylistFragmentArgs.fromBundle(arguments!!).system
         if (savedInstanceState == null) {
             val filesListFragment =
                 PlaylistListFragment.build {
-                    path = Environment.getExternalStorageDirectory().absolutePath
+                    path = args
                 }
 
             this.activity!!.supportFragmentManager.beginTransaction()
@@ -48,6 +49,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         initBackStack()
         return binding.root
     }
+
     private fun initViews()
     {
         (this.activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
@@ -87,7 +89,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
 
     }
 
-    private fun addSystemFragment(playlistModel: JsonClasses.RAPlaylistEntry)
+    private fun addPlaylistragment(playlistModel: JsonClasses.RAPlaylistEntry)
     {
         val systemsListFragment =
             PlaylistListFragment.build {

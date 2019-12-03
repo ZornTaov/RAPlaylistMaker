@@ -19,6 +19,9 @@ import org.zornco.ra_playlist_maker.common.OnItemClickListener
 import java.io.File
 import java.io.FileNotFoundException
 import kotlin.Exception
+import com.google.gson.GsonBuilder
+
+
 
 class PlaylistListFragment : Fragment() {
 
@@ -90,7 +93,7 @@ class PlaylistListFragment : Fragment() {
             //playlist does not exist?
             Log.d("PlLiFra", "Making New Playlist for ")
             val newList = File(PATH)
-            val gson = Gson()
+            val gson = GsonBuilder().setPrettyPrinting().create()
             files = JsonClasses.RAPlaylist()
             newList.writeText(gson.toJson( files ))
 

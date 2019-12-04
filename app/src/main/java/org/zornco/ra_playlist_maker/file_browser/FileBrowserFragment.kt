@@ -67,7 +67,7 @@ class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
         backStackManager.onStackChangeListener = {
             updateAdapterData(it)
         }
-        backStackManager.addToStack(fileModel = FileModel(Environment.getExternalStorageDirectory().absolutePath, FileType.FOLDER, "/", 0.0))
+        backStackManager.addToStack(FileModel(Environment.getExternalStorageDirectory().absolutePath, FileType.FOLDER, "/", 0.0))
     }
 
     private fun updateAdapterData(files: List<FileModel>) {

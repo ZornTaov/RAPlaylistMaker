@@ -11,13 +11,10 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
 import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.databinding.FragmentSystemsBinding
-import org.zornco.ra_playlist_maker.common.BackStackManager
-import org.zornco.ra_playlist_maker.common.BreadcrumbRecyclerAdapter
 import org.zornco.ra_playlist_maker.common.OnItemClickListener
 
 class SystemsFragment : Fragment(), OnItemClickListener {
@@ -31,19 +28,7 @@ class SystemsFragment : Fragment(), OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_systems, container, false)
-        if (savedInstanceState == null) {
-            val filesListFragment =
-                SystemsListFragment.build {
-                    path = Environment.getExternalStorageDirectory().absolutePath
-                }
-
-            this.activity!!.supportFragmentManager.beginTransaction()
-                .add(R.id.container, filesListFragment)
-                .addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
-                .commit()
-        }
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_systems, container, false)
         initViews()
         initBackStack()
         return binding.root
@@ -88,18 +73,4 @@ class SystemsFragment : Fragment(), OnItemClickListener {
     override fun onLongClick(obj: Any) {
 
     }
-
-    private fun addSystemFragment(systemModel: JsonClasses.RASystem)
-    {
-        val systemsListFragment =
-            SystemsListFragment.build {
-                path = systemModel.system[0]
-            }
-        val fragmentTransaction = this.activity!!.supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container, systemsListFragment)
-        fragmentTransaction.addToBackStack(systemModel.system[0])
-        fragmentTransaction.commit()
-    }
-
-
 }

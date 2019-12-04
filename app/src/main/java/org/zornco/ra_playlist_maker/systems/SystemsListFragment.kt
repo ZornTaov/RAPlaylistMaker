@@ -22,23 +22,6 @@ class SystemsListFragment : Fragment() {
     private lateinit var mFilesAdapter: SystemsRecyclerAdapter
     private lateinit var mCallback: OnItemClickListener
 
-    companion object {
-        private const val ARG_PATH: String = "org.zornco.ra_playlist_maker.systems.path"
-        fun build(block: Builder.() -> Unit) = Builder().apply(block).build()
-    }
-
-    class Builder {
-        var path: String = ""
-
-        fun build(): SystemsListFragment {
-            val fragment = SystemsListFragment()
-            val args = Bundle()
-            args.putString(ARG_PATH, path)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
 

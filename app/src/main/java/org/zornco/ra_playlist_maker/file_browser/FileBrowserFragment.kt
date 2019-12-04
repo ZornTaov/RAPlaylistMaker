@@ -10,16 +10,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.common.*
 import org.zornco.ra_playlist_maker.common.FileUtils.Companion.launchFileIntent
 import org.zornco.ra_playlist_maker.databinding.FragmentFileBrowserBinding
+import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
 class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
     private lateinit var binding : FragmentFileBrowserBinding
     private val backStackManager = BackStackManager<FileModel>()
     private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<FileModel>
+    val args: FileBrowserFragmentArgs by navArgs()
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View?
     {
@@ -31,6 +35,7 @@ class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
             val filesListFragment =
                 FilesListFragment.build {
                     path = Environment.getExternalStorageDirectory().absolutePath
+                    extensions = args.system.allExt.toTypedArray()
                 }
 
             this.activity!!.supportFragmentManager.beginTransaction()
@@ -83,7 +88,12 @@ class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
         }
         else
         {
-            launchFileIntent(fileModel)
+            val playlistModel: JsonClasses.RAPlaylistEntry = JsonClasses.RAPlaylistEntry(path = fileModel.path, label = fileModel.name)
+            Log.d("TAG", "${playlistModel.label}")
+            val ac = FileBrowserFragmentDirections.actionFileBrowserFragmentToEntryEditorFragment()
+            ac.playlistEntry = playlistModel
+            this.findNavController().navigate(ac)
+            //launchFileIntent(fileModel)
         }
         Log.d("TAG", "${fileModel.path}")
     }

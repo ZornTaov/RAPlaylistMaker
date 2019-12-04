@@ -9,10 +9,10 @@ import java.nio.charset.Charset
 class PlaylistLoader {
     companion object {
         @Throws(Exception::class)
-        fun loadPlaylist(context: Context, path:String ): JsonClasses.RAPlaylist {
+        fun loadPlaylist(path:String ): JsonClasses.RAPlaylist {
             val gson = Gson()
             try {
-                val json = loadJSONFromAsset(context, path)
+                val json = loadJSONFromAsset(path)
                 return gson.fromJson(json, JsonClasses.RAPlaylist::class.java)
             }
             catch (e:Exception)
@@ -23,7 +23,7 @@ class PlaylistLoader {
         }
 
         @Throws(IOException::class)
-        fun loadJSONFromAsset(context: Context, file: String): String? {
+        fun loadJSONFromAsset(file: String): String? {
             val json: String?
             try {
                 val fil = File(file)

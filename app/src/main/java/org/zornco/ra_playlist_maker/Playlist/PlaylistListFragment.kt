@@ -27,21 +27,21 @@ class PlaylistListFragment : Fragment() {
 
     private lateinit var mFilesAdapter: PlaylistRecyclerAdapter
     private lateinit var mCallback: OnItemClickListener
-    private lateinit var Playlist: String
-    private lateinit var PATH: String
+    lateinit var playlist: JsonClasses.RAPlaylist
 
     companion object {
-        private const val ARG_PATH: String = "org.zornco.ra_playlist_maker.systems.path"
+        private const val ARG_PLAYLIST: String = "org.zornco.ra_playlist_maker.systems.playlist"
         fun build(block: Builder.() -> Unit) = Builder().apply(block).build()
     }
 
     class Builder {
-        var path: String = ""
+        lateinit var playlist: JsonClasses.RAPlaylist
 
         fun build(): PlaylistListFragment {
             val fragment = PlaylistListFragment()
             val args = Bundle()
-            args.putString(ARG_PATH, path)
+
+            args.putParcelable(ARG_PLAYLIST, playlist)
             fragment.arguments = args
             return fragment
         }
@@ -65,8 +65,8 @@ class PlaylistListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Playlist = arguments?.getString(ARG_PATH)!!
-        PATH = "/storage/emulated/0/RetroArch/playlists/$Playlist.lpl"
+        playlist = arguments?.getParcelable<JsonClasses.RAPlaylist>(ARG_PLAYLIST)!!
+
         initViews()
     }
 
@@ -84,29 +84,14 @@ class PlaylistListFragment : Fragment() {
     }
 
     private fun updateDate() {
-        var files: JsonClasses.RAPlaylist?
-        try {
-            files = PlaylistLoader.loadPlaylist(this.activity as MainActivity, PATH)
-        }
-        catch (e:Exception)
-        {
-            //playlist does not exist?
-            Log.d("PlLiFra", "Making New Playlist for ")
-            val newList = File(PATH)
-            val gson = GsonBuilder().setPrettyPrinting().create()
-            files = JsonClasses.RAPlaylist()
-            newList.writeText(gson.toJson( files ))
 
-        }
-
-
-        if (files!!.items.isEmpty()) {
+        if (playlist.items.isEmpty()) {
             emptyPlaylistLayout.visibility = View.VISIBLE
         } else {
             emptyPlaylistLayout.visibility = View.INVISIBLE
         }
 
-        mFilesAdapter.updateData(files.items)
+        mFilesAdapter.updateData(playlist.items)
     }
 
     private fun getEntriesFromPlaylist(playlist : MutableList<JsonClasses.RAPlaylistEntry>): List<JsonClasses.RAPlaylistEntry> {
@@ -121,6 +106,4 @@ class PlaylistListFragment : Fragment() {
             )
         }
     }
-
-
 }

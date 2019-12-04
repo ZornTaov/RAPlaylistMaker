@@ -18,21 +18,24 @@ import java.lang.Exception
 class FilesListFragment : Fragment() {
     private lateinit var mFilesAdapter: FilesRecyclerAdapter
     private lateinit var PATH: String
+    private lateinit var EXTENSIONS:List<String>
     private lateinit var mCallback: OnItemClickListener
 
 
     companion object {
         private const val ARG_PATH: String = "org.zornco.ra_playlist_maker.fileslist.path"
+        private const val ARG_EXTENSIONS: String = "org.zornco.ra_playlist_maker.fileslist.extensions"
         fun build(block: Builder.() -> Unit) = Builder().apply(block).build()
     }
 
     class Builder {
         var path: String = ""
-
+        var extensions: Array<String> = arrayOf()
         fun build(): FilesListFragment {
             val fragment = FilesListFragment()
             val args = Bundle()
             args.putString(ARG_PATH, path)
+            args.putStringArray(ARG_EXTENSIONS, extensions)
             fragment.arguments = args
             return fragment
         }
@@ -62,6 +65,7 @@ class FilesListFragment : Fragment() {
             return
         }
         PATH = filePath
+        EXTENSIONS = arguments?.getStringArray(ARG_EXTENSIONS)!!.toList()
 
         initViews()
     }
@@ -89,8 +93,7 @@ class FilesListFragment : Fragment() {
             emptyFolderLayout.visibility = View.INVISIBLE
         }
 
-        val extensions:List<String> = listOf("smc")
-        mFilesAdapter.updateData(files, extensions)
+        mFilesAdapter.updateData(files, EXTENSIONS)
     }
 
 }

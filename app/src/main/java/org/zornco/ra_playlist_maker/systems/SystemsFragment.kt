@@ -81,8 +81,7 @@ class SystemsFragment : Fragment(), OnItemClickListener {
 
         val systemModel = obj as JsonClasses.RASystem
         Log.d("TAG", "${systemModel.name}")
-        val amount = systemModel.system[0]
-        val action = SystemsFragmentDirections.actionSystemsFragmentToPlaylistFragment(amount)
+        val action = SystemsFragmentDirections.actionSystemsFragmentToPlaylistFragment(systemModel)
         this.view!!.findNavController().navigate(action)
     }
 

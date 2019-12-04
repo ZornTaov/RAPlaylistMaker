@@ -52,7 +52,7 @@ class FileBrowserActivity : AppCompatActivity(){
         initViews()
         initBackStack()
         val gson = Gson()
-        val systemList: List<JsonClasses.RASystem> = gson.fromJson(PlaylistLoader.loadJSONFromAsset(this, "systems.json"), Array<JsonClasses.RASystem>::class.java).toList()
+        val systemList: List<JsonClasses.RASystem> = gson.fromJson(PlaylistLoader.loadJSONFromAsset("systems.json"), Array<JsonClasses.RASystem>::class.java).toList()
         val count = systemList.count()
         val build = Build.SUPPORTED_ABIS[0]
 

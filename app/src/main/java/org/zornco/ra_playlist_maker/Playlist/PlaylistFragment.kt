@@ -63,7 +63,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
                 }
             this.activity!!.supportFragmentManager.beginTransaction()
                 .add(R.id.container, playlistListFragment)
-                .addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
+                //.addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
                 .commit()
             playlist = newplaylist
         }

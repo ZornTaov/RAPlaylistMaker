@@ -22,9 +22,8 @@ import org.zornco.ra_playlist_maker.common.OnItemClickListener
 
 class SystemsFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentSystemsBinding
-    private val backStackManager =
-        BackStackManager<JsonClasses.RASystem>()
-    private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<JsonClasses.RASystem>
+    //private val backStackManager = BackStackManager<JsonClasses.RASystem>()
+    //private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<JsonClasses.RASystem>
 
 
     override fun onCreateView(
@@ -53,30 +52,30 @@ class SystemsFragment : Fragment(), OnItemClickListener {
     {
         (this.activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
 
-        binding.breadcrumbRecyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-        mBreadcrumbRecyclerAdapter =
-            BreadcrumbRecyclerAdapter()
-        binding.breadcrumbRecyclerView.adapter = mBreadcrumbRecyclerAdapter
-        mBreadcrumbRecyclerAdapter.onItemClickListener = {
-            this.activity?.supportFragmentManager?.popBackStack(it.name, 2)
-            backStackManager.popFromStackTill(it)
-        }
+//        binding.breadcrumbRecyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+//        mBreadcrumbRecyclerAdapter =
+//            BreadcrumbRecyclerAdapter()
+//        binding.breadcrumbRecyclerView.adapter = mBreadcrumbRecyclerAdapter
+//        mBreadcrumbRecyclerAdapter.onItemClickListener = {
+//            this.activity?.supportFragmentManager?.popBackStack(it.name, 2)
+//            backStackManager.popFromStackTill(it)
+//        }
     }
 
     private fun initBackStack()
     {
-        backStackManager.onStackChangeListener = {
-            updateAdapterData(it)
-        }
-        backStackManager.addToStack(fileModel = JsonClasses.RASystem("Systems"))
+//        backStackManager.onStackChangeListener = {
+//            updateAdapterData(it)
+//        }
+//        backStackManager.addToStack(fileModel = JsonClasses.RASystem("Systems"))
     }
 
     private fun updateAdapterData(files: List<JsonClasses.RASystem>) {
-        mBreadcrumbRecyclerAdapter.updateData(files)
-        if (files.isNotEmpty())
-        {
-            binding.breadcrumbRecyclerView.smoothScrollToPosition(files.size - 1)
-        }
+//        mBreadcrumbRecyclerAdapter.updateData(files)
+//        if (files.isNotEmpty())
+//        {
+//            binding.breadcrumbRecyclerView.smoothScrollToPosition(files.size - 1)
+//        }
     }
     override fun onClick(obj: Any) {
 

@@ -21,9 +21,8 @@ import org.zornco.ra_playlist_maker.common.OnItemClickListener
 
 class PlaylistFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentPlaylistBinding
-    private val backStackManager =
-        BackStackManager<JsonClasses.RAPlaylistEntry>()
-    private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<JsonClasses.RAPlaylistEntry>
+    //private val backStackManager = BackStackManager<JsonClasses.RAPlaylistEntry>()
+    //private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<JsonClasses.RAPlaylistEntry>
 
 
     override fun onCreateView(
@@ -52,32 +51,31 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
 
     private fun initViews()
     {
-        (this.activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+        (this.activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
-        binding.breadcrumbRecyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-        mBreadcrumbRecyclerAdapter =
-            BreadcrumbRecyclerAdapter()
-        binding.breadcrumbRecyclerView.adapter = mBreadcrumbRecyclerAdapter
-        mBreadcrumbRecyclerAdapter.onItemClickListener = {
-            this.activity?.supportFragmentManager?.popBackStack(it.label, 2)
-            backStackManager.popFromStackTill(it)
-        }
+        //binding.breadcrumbRecyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+        //mBreadcrumbRecyclerAdapter = BreadcrumbRecyclerAdapter()
+        //binding.breadcrumbRecyclerView.adapter = mBreadcrumbRecyclerAdapter
+//        mBreadcrumbRecyclerAdapter.onItemClickListener = {
+//            this.activity?.supportFragmentManager?.popBackStack(it.label, 2)
+//            backStackManager.popFromStackTill(it)
+//        }
     }
 
     private fun initBackStack()
     {
-        backStackManager.onStackChangeListener = {
-            updateAdapterData(it)
-        }
-        backStackManager.addToStack(fileModel = JsonClasses.RAPlaylistEntry("Playlist"))
+//        backStackManager.onStackChangeListener = {
+//            updateAdapterData(it)
+//        }
+//        backStackManager.addToStack(fileModel = JsonClasses.RAPlaylistEntry("Playlist"))
     }
 
     private fun updateAdapterData(files: List<JsonClasses.RAPlaylistEntry>) {
-        mBreadcrumbRecyclerAdapter.updateData(files)
-        if (files.isNotEmpty())
-        {
-            binding.breadcrumbRecyclerView.smoothScrollToPosition(files.size - 1)
-        }
+        //mBreadcrumbRecyclerAdapter.updateData(files)
+        //if (files.isNotEmpty())
+        //{
+        //    binding.breadcrumbRecyclerView.smoothScrollToPosition(files.size - 1)
+        //}
     }
     override fun onClick(obj: Any) {
         val playlistModel = obj as JsonClasses.RAPlaylistEntry

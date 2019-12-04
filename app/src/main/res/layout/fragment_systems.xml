@@ -16,12 +16,6 @@
                 app:titleTextColor="@color/grey">
             </androidx.appcompat.widget.Toolbar>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/breadcrumbRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </androidx.recyclerview.widget.RecyclerView>
 
         </com.google.android.material.appbar.AppBarLayout>
 

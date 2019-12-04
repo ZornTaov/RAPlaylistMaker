@@ -10,4 +10,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="empty_Playlist">Empty Playlist</string>
+    <string name="label">Label</string>
+    <string name="game_name_hint">Game Name</string>
+    <string name="path">Path</string>
+    <string name="core_path">Core Path</string>
+    <string name="crc32">CRC32</string>
+    <string name="database_name">Database Name</string>
+    <string name="core_name">Core Name</string>
+    <string name="auto_fill">Auto Fill</string>
+    <string name="generate_crc32">Generate CRC32</string>
+    <string name="done">Done</string>
 </resources>

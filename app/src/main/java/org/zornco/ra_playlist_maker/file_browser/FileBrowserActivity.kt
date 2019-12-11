@@ -1,31 +1,26 @@
 package org.zornco.ra_playlist_maker.file_browser
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import org.zornco.ra_playlist_maker.common.FileModel
-import org.zornco.ra_playlist_maker.common.FileType
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.*
 import org.zornco.ra_playlist_maker.libretro.JsonClasses
-import android.os.Build
-import androidx.navigation.fragment.NavHostFragment
-import org.zornco.ra_playlist_maker.libretro.PlaylistLoader
+import android.util.Log
+import org.zornco.ra_playlist_maker.playlist.EntryEditorActivity
+//import org.zornco.ra_playlist_maker.Playlist.EntryEditorActivity
 import org.zornco.ra_playlist_maker.R
-import org.zornco.ra_playlist_maker.common.BackStackManager
-import org.zornco.ra_playlist_maker.common.BreadcrumbRecyclerAdapter
+import org.zornco.ra_playlist_maker.common.*
 import org.zornco.ra_playlist_maker.databinding.FileBrowserBinding
 
-class FileBrowserActivity : AppCompatActivity(){
+class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var binding : FileBrowserBinding
     private lateinit var drawerLayout: DrawerLayout
     private val backStackManager = BackStackManager<FileModel>()
     private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<FileModel>
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,47 +37,61 @@ class FileBrowserActivity : AppCompatActivity(){
             val filesListFragment =
                 FilesListFragment.build {
                     path = Environment.getExternalStorageDirectory().absolutePath
+                    extensions = JsonClasses.DataHolder.getInstance().currentSystem!!.allExt.toTypedArray()
                 }
 
-            supportFragmentManager.beginTransaction()
+            this.supportFragmentManager.beginTransaction()
                 .add(R.id.container, filesListFragment)
                 .addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
                 .commit()
+            initViews()
+            initBackStack()
+        } else
+        {
+            val filemodel: FileModel? = savedInstanceState.getParcelable("Top")
+            if (filemodel != null) {
+                addFileFragment(filemodel)
+            }
+            initViews()
+            initBackStack(filemodel)
         }
-        initViews()
-        initBackStack()
-        val gson = Gson()
-        val systemList: List<JsonClasses.RASystem> = gson.fromJson(PlaylistLoader.loadJSONFromAsset("systems.json"), Array<JsonClasses.RASystem>::class.java).toList()
-        val count = systemList.count()
-        val build = Build.SUPPORTED_ABIS[0]
+        //val gson = Gson()
+        //val systemList: List<JsonClasses.RASystem> = gson.fromJson(PlaylistLoader.loadJSONFromAsset("systems.json"), Array<JsonClasses.RASystem>::class.java).toList()
+        //val count = systemList.count()
+        //val build = Build.SUPPORTED_ABIS[0]
 
         /*val json:JSONArray = PlaylistLoader.load(this)
         val text = findViewById<TextView>(R.id.textview)
         text.text = json.length().toString()*/
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d("saveInst", backStackManager.top.name)
+        outState.putParcelable("Top",backStackManager.top)
+    }
     private fun initViews()
     {
-        setSupportActionBar(binding.toolbar)
+        (this as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
 
         binding.breadcrumbRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         mBreadcrumbRecyclerAdapter =
             BreadcrumbRecyclerAdapter()
         binding.breadcrumbRecyclerView.adapter = mBreadcrumbRecyclerAdapter
         mBreadcrumbRecyclerAdapter.onItemClickListener = {
-            supportFragmentManager.popBackStack(it.path, 2)
+            this.supportFragmentManager.popBackStack(it.path, 2)
             backStackManager.popFromStackTill(it)
         }
     }
 
-    private fun initBackStack()
+
+    private fun initBackStack(fileModel: FileModel? = null)
     {
         backStackManager.onStackChangeListener = {
             updateAdapterData(it)
         }
-        backStackManager.addToStack(fileModel = FileModel(Environment.getExternalStorageDirectory().absolutePath, FileType.FOLDER, "/", 0.0))
+        backStackManager.addToStack(fileModel ?: FileModel(Environment.getExternalStorageDirectory().absolutePath, FileType.FOLDER, "/", 0.0))
     }
-
     private fun updateAdapterData(files: List<FileModel>) {
         mBreadcrumbRecyclerAdapter.updateData(files)
         if (files.isNotEmpty())
@@ -91,11 +100,49 @@ class FileBrowserActivity : AppCompatActivity(){
         }
     }
 
+    override fun onClick(obj: Any) {
+        val fileModel = obj as FileModel
+        if (fileModel.fileType == FileType.FOLDER)
+        {
+            addFileFragment(fileModel)
+        }
+        else
+        {
+            val playlistModel: JsonClasses.RAPlaylistEntry = JsonClasses.RAPlaylistEntry(path = fileModel.path, label = fileModel.name)
+            Log.d("TAG", "${playlistModel.label}")
+            JsonClasses.DataHolder.getInstance().currentEntry = playlistModel
+            val inten = Intent(this, EntryEditorActivity::class.java)
+            startActivity(inten)
+            //launchFileIntent(fileModel)
+        }
+        Log.d("TAG", "${fileModel.path}")
+    }
+
+    override fun onLongClick(obj: Any) {
+
+    }
+
+    private fun addFileFragment(fileModel: FileModel)
+    {
+        val filesListFragment =
+            FilesListFragment.build {
+                path = fileModel.path
+            }
+        backStackManager.addToStack(fileModel)
+        this.supportFragmentManager.beginTransaction()
+            .replace(R.id.container, filesListFragment)
+            .addToBackStack(fileModel.path)
+            .commit()
+    }
+
 
     override fun onBackPressed() {
-        val fragment = this.supportFragmentManager.findFragmentById(R.id.filesRecyclerView) as? NavHostFragment
-        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? IOnBackPressed
-        currentFragment?.onBackPressed()?.takeIf { !it }?.let{ super.onBackPressed() }
+        super.onBackPressed()
+        backStackManager.popFromStack()
+        if (this.supportFragmentManager.backStackEntryCount == 0)
+        {
+            finish()
+        }
 
     }
 

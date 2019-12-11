@@ -6,20 +6,6 @@
     app:startDestination="@id/systemsFragment">
 
     <fragment
-        android:id="@+id/fileBrowserFragment"
-        android:name="org.zornco.ra_playlist_maker.file_browser.FileBrowserFragment"
-        android:label="fragment_file_browser"
-        tools:layout="@layout/fragment_file_browser" >
-        <action
-            android:id="@+id/action_fileBrowserFragment_to_entryEditorFragment"
-            app:destination="@id/entryEditorFragment" >
-            <argument android:defaultValue="true"
-                android:name="newFile" />
-        </action>
-        <argument android:name="system"
-            app:argType="org.zornco.ra_playlist_maker.libretro.JsonClasses$RASystem" />
-    </fragment>
-    <fragment
         android:id="@+id/systemsFragment"
         android:name="org.zornco.ra_playlist_maker.systems.SystemsFragment"
         android:label="fragment_systems"
@@ -33,14 +19,6 @@
         android:name="org.zornco.ra_playlist_maker.playlist.EntryEditorFragment"
         android:label="fragment_entry_editor"
         tools:layout="@layout/fragment_entry_editor" >
-        <argument android:name="playlistEntry"
-            app:argType="org.zornco.ra_playlist_maker.libretro.JsonClasses$RAPlaylistEntry"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="newFile"
-            app:argType="boolean"
-            android:defaultValue="false" />
         <action
             android:id="@+id/action_entryEditorFragment_to_playlistFragment"
             app:destination="@id/playlistFragment" />
@@ -51,17 +29,21 @@
         android:label="PlaylistFragment"
         tools:layout="@layout/fragment_playlist" >
         <action
-            android:id="@+id/action_playlistFragment_to_fileBrowserFragment"
-            app:destination="@id/fileBrowserFragment" />
-        <action
             android:id="@+id/action_playlistFragment_to_entryEditorFragment"
             app:destination="@id/entryEditorFragment" />
-        <argument android:name="system"
-            app:argType="org.zornco.ra_playlist_maker.libretro.JsonClasses$RASystem" />
-        <argument
-            android:name="entry"
-            app:argType="org.zornco.ra_playlist_maker.libretro.JsonClasses$RAPlaylistEntry"
-            app:nullable="true"
-            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_playlistFragment_to_fileBrowserActivity"
+            app:destination="@id/fileBrowserActivity" />
     </fragment>
+    <activity
+        android:id="@+id/fileBrowserActivity"
+        android:name="org.zornco.ra_playlist_maker.file_browser.FileBrowserActivity"
+        android:label="FileBrowserActivity"
+        tools:layout="@layout/file_browser">
+    </activity>
+    <activity
+        android:id="@+id/entryEditorActivity"
+        android:name="org.zornco.ra_playlist_maker.playlist.EntryEditorActivity"
+        android:label="activity_entry_editor"
+        tools:layout="@layout/activity_entry_editor" />
 </navigation>

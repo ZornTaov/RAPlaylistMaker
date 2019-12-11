@@ -4,22 +4,26 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.google.android.material.navigation.NavigationView
 import org.zornco.ra_playlist_maker.file_browser.IOnBackPressed
 import org.zornco.ra_playlist_maker.common.OnItemClickListener
 import org.zornco.ra_playlist_maker.databinding.ActivityMainBinding
 import java.io.*
 
 class MainActivity : AppCompatActivity(),
-    OnItemClickListener
+    OnItemClickListener,
+    NavigationView.OnNavigationItemSelectedListener
 {
 
     lateinit var binding : ActivityMainBinding
@@ -30,6 +34,11 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+        this.setSupportActionBar(binding.toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_menu)
+        }
         checkPermission(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             STORAGE_PERMISSION_CODE)
@@ -39,10 +48,15 @@ class MainActivity : AppCompatActivity(),
         //binding.textView.text = Build.SUPPORTED_ABIS[0]
         drawerLayout = binding.drawerLayout
         val navController = this.findNavController(R.id.myNavHostFragment)
-        //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+        //binding.navView.setNavigationItemSelectedListener(this)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = this.findNavController(R.id.myNavHostFragment)
+        return NavigationUI.navigateUp(navController, drawerLayout)
+    }
     fun InputStream.toFile(path: String) {
         File(path).outputStream().use { this.copyTo(it) }
     }
@@ -83,23 +97,43 @@ class MainActivity : AppCompatActivity(),
 
     override fun onClick(obj: Any) {
         val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
-        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? OnItemClickListener
+        val currentFragment = fragment?.childFragmentManager?.fragments?.first() as? OnItemClickListener
         currentFragment?.onClick(obj)
     }
 
     override fun onLongClick(obj: Any) {
         val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
-        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? OnItemClickListener
+        val currentFragment = fragment?.childFragmentManager?.fragments?.first() as? OnItemClickListener
         currentFragment?.onLongClick(obj)
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
-        val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? IOnBackPressed
-        currentFragment?.onBackPressed()?.takeIf { !it }?.let{
-            this.finish()
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            return
+        }
+        val fragment = this.supportFragmentManager.primaryNavigationFragment?.childFragmentManager?.fragments?.first()
+        val currentFragment = fragment as? IOnBackPressed
+        if (currentFragment != null) {
+            if (!currentFragment.onBackPressed())
+            {
+                this.finish()
+            }
+            //super.onBackPressed()
+        }
+        else
+        {
+            super.onBackPressed()
         }
     }
 
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.FileBrowserFragment -> {
+                Toast.makeText(this, "Publication", Toast.LENGTH_SHORT).show()
+            }
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
 }

@@ -29,9 +29,6 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentPlaylistBinding
     //private val backStackManager = BackStackManager<JsonClasses.RAPlaylistEntry>()
     //private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<JsonClasses.RAPlaylistEntry>
-    val args: PlaylistFragmentArgs by navArgs()
-
-    lateinit var playlist:JsonClasses.RAPlaylist
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +38,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_playlist, container, false)
         binding.fab.setOnClickListener { onFabClick() }
         if (savedInstanceState == null) {
-            val PATH = "/storage/emulated/0/RetroArch/playlists/${args.system.system[0]}.lpl"
+            val PATH = "/storage/emulated/0/RetroArch/playlists/${JsonClasses.DataHolder.getInstance().currentSystem!!.system[0]}.lpl"
             var newplaylist:JsonClasses.RAPlaylist
             try {
                 newplaylist = PlaylistLoader.loadPlaylist(PATH)
@@ -50,7 +47,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
             {
                 //playlist does not exist?
                 Log.d("PlLiFra", "Making New Playlist for $PATH")
-                Toast.makeText(this.context, "Making new Playlist for ${args.system.system[0]}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context, "Making new Playlist for ${JsonClasses.DataHolder.getInstance().currentSystem!!.system[0]}", Toast.LENGTH_SHORT).show()
                 val newList = File(PATH)
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 newplaylist = JsonClasses.RAPlaylist()
@@ -65,9 +62,9 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
                 .add(R.id.container, playlistListFragment)
                 //.addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
                 .commit()
-            playlist = newplaylist
+            JsonClasses.DataHolder.getInstance().currentPlaylist = newplaylist
         }
-        if (args.entry != null)
+        if (JsonClasses.DataHolder.getInstance().currentEntry != null)
         {
 
         }
@@ -102,7 +99,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         val playlistModel = obj as JsonClasses.RAPlaylistEntry
         Log.d("TAG", "${playlistModel.label}")
         val ac = PlaylistFragmentDirections.actionPlaylistFragmentToEntryEditorFragment()
-        ac.playlistEntry = playlistModel
+        JsonClasses.DataHolder.getInstance().currentEntry = playlistModel
         this.findNavController().navigate(ac)
     }
 
@@ -111,7 +108,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
     }
 
     fun onFabClick() {
-        val ac = PlaylistFragmentDirections.actionPlaylistFragmentToFileBrowserFragment(args.system)
+        val ac = PlaylistFragmentDirections.actionPlaylistFragmentToFileBrowserActivity()
         this.findNavController().navigate(ac)
     }
 }

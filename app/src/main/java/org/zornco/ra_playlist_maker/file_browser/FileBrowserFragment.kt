@@ -15,7 +15,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.common.*
-import org.zornco.ra_playlist_maker.common.FileUtils.Companion.launchFileIntent
 import org.zornco.ra_playlist_maker.databinding.FragmentFileBrowserBinding
 import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
@@ -23,7 +22,6 @@ class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
     private lateinit var binding : FragmentFileBrowserBinding
     private val backStackManager = BackStackManager<FileModel>()
     private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<FileModel>
-    val args: FileBrowserFragmentArgs by navArgs()
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View?
     {
@@ -35,19 +33,32 @@ class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
             val filesListFragment =
                 FilesListFragment.build {
                     path = Environment.getExternalStorageDirectory().absolutePath
-                    extensions = args.system.allExt.toTypedArray()
+                    extensions = JsonClasses.DataHolder.getInstance().currentSystem!!.allExt.toTypedArray()
                 }
 
             this.activity!!.supportFragmentManager.beginTransaction()
                 .add(R.id.container, filesListFragment)
                 .addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
                 .commit()
+            initViews()
+            initBackStack()
+        } else
+        {
+            val filemodel: FileModel? = savedInstanceState.getParcelable("Top")
+            if (filemodel != null) {
+                addFileFragment(filemodel)
+            }
+            initViews()
+            initBackStack(filemodel)
         }
-        initViews()
-        initBackStack()
         return binding.root
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d("saveInst", backStackManager.top.name)
+        outState.putParcelable("Top",backStackManager.top)
+    }
     private fun initViews()
     {
         (this.activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
@@ -62,12 +73,12 @@ class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
         }
     }
 
-    private fun initBackStack()
+    private fun initBackStack(fileModel: FileModel? = null)
     {
         backStackManager.onStackChangeListener = {
             updateAdapterData(it)
         }
-        backStackManager.addToStack(FileModel(Environment.getExternalStorageDirectory().absolutePath, FileType.FOLDER, "/", 0.0))
+        backStackManager.addToStack(fileModel ?: FileModel(Environment.getExternalStorageDirectory().absolutePath, FileType.FOLDER, "/", 0.0))
     }
 
     private fun updateAdapterData(files: List<FileModel>) {
@@ -90,9 +101,9 @@ class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
         {
             val playlistModel: JsonClasses.RAPlaylistEntry = JsonClasses.RAPlaylistEntry(path = fileModel.path, label = fileModel.name)
             Log.d("TAG", "${playlistModel.label}")
-            val ac = FileBrowserFragmentDirections.actionFileBrowserFragmentToEntryEditorFragment()
-            ac.playlistEntry = playlistModel
-            this.findNavController().navigate(ac)
+           // val ac = FileBrowserFragmentDirections.actionFileBrowserFragmentToEntryEditorFragment()
+            JsonClasses.DataHolder.getInstance().currentEntry = playlistModel
+            //this.findNavController().navigate(ac)
             //launchFileIntent(fileModel)
         }
         Log.d("TAG", "${fileModel.path}")
@@ -109,13 +120,14 @@ class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
                 path = fileModel.path
             }
         backStackManager.addToStack(fileModel)
-        val fragmentTransaction = this.activity!!.supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container, filesListFragment)
-        fragmentTransaction.addToBackStack(fileModel.path)
-        fragmentTransaction.commit()
+        this.activity!!.supportFragmentManager.beginTransaction()
+            .replace(R.id.container, filesListFragment)
+            .addToBackStack(fileModel.path)
+            .commit()
     }
     override fun onBackPressed(): Boolean {
         backStackManager.popFromStack()
+        this.activity?.supportFragmentManager?.popBackStack()
         if (this.activity?.supportFragmentManager?.backStackEntryCount == 0)
         {
             return false

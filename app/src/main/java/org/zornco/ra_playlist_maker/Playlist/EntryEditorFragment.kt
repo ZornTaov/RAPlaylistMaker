@@ -8,17 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import org.zornco.ra_playlist_maker.databinding.FragmentEntryEditorBinding
+import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
 class EntryEditorFragment : Fragment() {
     lateinit var binding: FragmentEntryEditorBinding
-    val args: EntryEditorFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentEntryEditorBinding.inflate(inflater, container, false)
-        binding.entry = args.playlistEntry
+        binding.entry = JsonClasses.DataHolder.getInstance().currentEntry
         return binding.root
     }
 

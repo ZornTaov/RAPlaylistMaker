@@ -5,6 +5,17 @@ import kotlinx.android.parcel.Parcelize
 
 
 class JsonClasses {
+    class DataHolder{
+        var currentSystem: RASystem? = null
+        var currentPlaylist: RAPlaylist? = null
+        var currentEntry: RAPlaylistEntry? = null
+
+        companion object {
+            private val holder = DataHolder()
+            fun getInstance(): DataHolder { return holder }
+        }
+    }
+
     @Parcelize
     data class RASystem(
         val name: String = "",

@@ -55,13 +55,6 @@ class SystemsFragment : Fragment(), OnItemClickListener {
 //        backStackManager.addToStack(fileModel = JsonClasses.RASystem("Systems"))
     }
 
-    private fun updateAdapterData(files: List<JsonClasses.RASystem>) {
-//        mBreadcrumbRecyclerAdapter.updateData(files)
-//        if (files.isNotEmpty())
-//        {
-//            binding.breadcrumbRecyclerView.smoothScrollToPosition(files.size - 1)
-//        }
-    }
     override fun onClick(obj: Any) {
 
         val systemModel = obj as JsonClasses.RASystem

@@ -91,7 +91,6 @@ class MainActivity : AppCompatActivity(),
         val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment
         val currentFragment = fragment?.childFragmentManager?.fragments?.get(0) as? OnItemClickListener
         currentFragment?.onLongClick(obj)
-
     }
 
     override fun onBackPressed() {
@@ -101,8 +100,6 @@ class MainActivity : AppCompatActivity(),
         currentFragment?.onBackPressed()?.takeIf { !it }?.let{
             this.finish()
         }
-
-
     }
 
 }

@@ -98,13 +98,6 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
 //        backStackManager.addToStack(fileModel = JsonClasses.RAPlaylistEntry("Playlist"))
     }
 
-    private fun updateAdapterData(files: List<JsonClasses.RAPlaylistEntry>) {
-        //mBreadcrumbRecyclerAdapter.updateData(files)
-        //if (files.isNotEmpty())
-        //{
-        //    binding.breadcrumbRecyclerView.smoothScrollToPosition(files.size - 1)
-        //}
-    }
     override fun onClick(obj: Any) {
         val playlistModel = obj as JsonClasses.RAPlaylistEntry
         Log.d("TAG", "${playlistModel.label}")
@@ -121,18 +114,4 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         val ac = PlaylistFragmentDirections.actionPlaylistFragmentToFileBrowserFragment(args.system)
         this.findNavController().navigate(ac)
     }
-
-    private fun addPlaylistragment(playlistModel: JsonClasses.RAPlaylistEntry)
-    {
-        val systemsListFragment =
-            PlaylistListFragment.build {
-                playlist = playlist
-            }
-        val fragmentTransaction = this.activity!!.supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container, systemsListFragment)
-        fragmentTransaction.addToBackStack(playlistModel.label)
-        fragmentTransaction.commit()
-    }
-
-
 }

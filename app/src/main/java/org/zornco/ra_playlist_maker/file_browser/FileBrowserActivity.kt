@@ -112,10 +112,15 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
             Log.d("TAG", "${playlistModel.label}")
             DataHolder.currentEntry = playlistModel
             val inten = Intent(this, EntryEditorActivity::class.java)
-            startActivity(inten)
+            startActivityForResult(inten,101)
             //launchFileIntent(fileModel)
         }
         Log.d("TAG", "${fileModel.path}")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        finish()
     }
 
     override fun onLongClick(obj: Any) {

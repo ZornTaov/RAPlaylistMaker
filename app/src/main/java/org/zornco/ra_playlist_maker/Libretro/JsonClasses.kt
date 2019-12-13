@@ -19,9 +19,9 @@ class JsonClasses {
     data class RAPlaylistEntry(
         var path: String = "",
         var label: String = "",
-        var core_path: String = "",
-        var core_name: String = "",
-        var crc32: String = "",
+        var core_path: String = "DETECT",
+        var core_name: String = "DETECT",
+        var crc32: String = "DETECT",
         var db_name: String = ""
     ) : Parcelable
 
@@ -33,7 +33,9 @@ class JsonClasses {
         var label_display_mode: Int = 0,
         var right_thumbnail_mode: Int = 0,
         var left_thumbnail_mode: Int = 0,
-        var items: MutableList<RAPlaylistEntry> = mutableListOf()
+        var items: MutableList<RAPlaylistEntry> = mutableListOf(),
+        @Transient var PATH: String = ""
+
     ) : Parcelable
 
     data class CoreInfo(val map: Map<String, Any?>) {

@@ -55,6 +55,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
                 newList.writeText(gson.toJson( newplaylist ))
                 newList.writer().close()
             }
+            newplaylist.PATH = PATH
             val playlistListFragment =
                 PlaylistListFragment.build {
                     playlist = newplaylist

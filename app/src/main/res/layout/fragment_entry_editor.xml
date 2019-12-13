@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         tools:context=".playlist.EntryEditorFragment">
 
-        <!-- TODO: Update blank fragment layout -->
         <TextView
             android:id="@+id/labelText"
             android:layout_width="wrap_content"

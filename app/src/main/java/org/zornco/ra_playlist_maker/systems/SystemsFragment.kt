@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
 import org.zornco.ra_playlist_maker.R
+import org.zornco.ra_playlist_maker.common.DataHolder
 import org.zornco.ra_playlist_maker.databinding.FragmentSystemsBinding
 import org.zornco.ra_playlist_maker.common.OnItemClickListener
 
@@ -59,7 +60,7 @@ class SystemsFragment : Fragment(), OnItemClickListener {
 
         val systemModel = obj as JsonClasses.RASystem
         Log.d("TAG", "${systemModel.name}")
-        JsonClasses.DataHolder.getInstance().currentSystem = systemModel
+        DataHolder.getInstance().currentSystem = systemModel
         val action = SystemsFragmentDirections.actionSystemsFragmentToPlaylistFragment()
         this.view!!.findNavController().navigate(action)
     }

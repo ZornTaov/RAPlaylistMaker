@@ -21,6 +21,7 @@ import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.databinding.FragmentPlaylistBinding
 import org.zornco.ra_playlist_maker.common.BackStackManager
 import org.zornco.ra_playlist_maker.common.BreadcrumbRecyclerAdapter
+import org.zornco.ra_playlist_maker.common.DataHolder
 import org.zornco.ra_playlist_maker.common.OnItemClickListener
 import org.zornco.ra_playlist_maker.libretro.PlaylistLoader
 import java.io.File
@@ -38,7 +39,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_playlist, container, false)
         binding.fab.setOnClickListener { onFabClick() }
         if (savedInstanceState == null) {
-            val PATH = "/storage/emulated/0/RetroArch/playlists/${JsonClasses.DataHolder.getInstance().currentSystem!!.system[0]}.lpl"
+            val PATH = "/storage/emulated/0/RetroArch/playlists/${DataHolder.getInstance().currentSystem!!.system[0]}.lpl"
             var newplaylist:JsonClasses.RAPlaylist
             try {
                 newplaylist = PlaylistLoader.loadPlaylist(PATH)
@@ -47,7 +48,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
             {
                 //playlist does not exist?
                 Log.d("PlLiFra", "Making New Playlist for $PATH")
-                Toast.makeText(this.context, "Making new Playlist for ${JsonClasses.DataHolder.getInstance().currentSystem!!.system[0]}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context, "Making new Playlist for ${DataHolder.getInstance().currentSystem!!.system[0]}", Toast.LENGTH_SHORT).show()
                 val newList = File(PATH)
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 newplaylist = JsonClasses.RAPlaylist()
@@ -62,9 +63,9 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
                 .add(R.id.container, playlistListFragment)
                 //.addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
                 .commit()
-            JsonClasses.DataHolder.getInstance().currentPlaylist = newplaylist
+            DataHolder.getInstance().currentPlaylist = newplaylist
         }
-        if (JsonClasses.DataHolder.getInstance().currentEntry != null)
+        if (DataHolder.getInstance().currentEntry != null)
         {
 
         }
@@ -99,7 +100,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         val playlistModel = obj as JsonClasses.RAPlaylistEntry
         Log.d("TAG", "${playlistModel.label}")
         val ac = PlaylistFragmentDirections.actionPlaylistFragmentToEntryEditorFragment()
-        JsonClasses.DataHolder.getInstance().currentEntry = playlistModel
+        DataHolder.getInstance().currentEntry = playlistModel
         this.findNavController().navigate(ac)
     }
 

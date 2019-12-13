@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
+import org.zornco.ra_playlist_maker.common.DataHolder
 import org.zornco.ra_playlist_maker.databinding.FragmentEntryEditorBinding
 import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
@@ -18,7 +19,7 @@ class EntryEditorFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentEntryEditorBinding.inflate(inflater, container, false)
-        binding.entry = JsonClasses.DataHolder.getInstance().currentEntry
+        binding.entry = DataHolder.getInstance().currentEntry
         return binding.root
     }
 

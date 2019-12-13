@@ -33,7 +33,7 @@ class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
             val filesListFragment =
                 FilesListFragment.build {
                     path = Environment.getExternalStorageDirectory().absolutePath
-                    extensions = JsonClasses.DataHolder.getInstance().currentSystem!!.allExt.toTypedArray()
+                    extensions = DataHolder.getInstance().currentSystem!!.allExt.toTypedArray()
                 }
 
             this.activity!!.supportFragmentManager.beginTransaction()
@@ -102,7 +102,7 @@ class FileBrowserFragment : Fragment(), IOnBackPressed, OnItemClickListener {
             val playlistModel: JsonClasses.RAPlaylistEntry = JsonClasses.RAPlaylistEntry(path = fileModel.path, label = fileModel.name)
             Log.d("TAG", "${playlistModel.label}")
            // val ac = FileBrowserFragmentDirections.actionFileBrowserFragmentToEntryEditorFragment()
-            JsonClasses.DataHolder.getInstance().currentEntry = playlistModel
+            DataHolder.getInstance().currentEntry = playlistModel
             //this.findNavController().navigate(ac)
             //launchFileIntent(fileModel)
         }

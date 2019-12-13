@@ -19,7 +19,7 @@ class EntryEditorFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentEntryEditorBinding.inflate(inflater, container, false)
-        binding.entry = DataHolder.getInstance().currentEntry
+        binding.entry = DataHolder.currentEntry
         return binding.root
     }
 

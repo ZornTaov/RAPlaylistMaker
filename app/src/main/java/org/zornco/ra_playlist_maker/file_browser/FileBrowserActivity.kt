@@ -37,7 +37,7 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
             val filesListFragment =
                 FilesListFragment.build {
                     path = Environment.getExternalStorageDirectory().absolutePath
-                    extensions = DataHolder.getInstance().currentSystem!!.allExt.toTypedArray()
+                    extensions = DataHolder.currentSystem!!.allExt.toTypedArray()
                 }
 
             this.supportFragmentManager.beginTransaction()
@@ -110,7 +110,7 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
         {
             val playlistModel: JsonClasses.RAPlaylistEntry = JsonClasses.RAPlaylistEntry(path = fileModel.path, label = fileModel.name)
             Log.d("TAG", "${playlistModel.label}")
-            DataHolder.getInstance().currentEntry = playlistModel
+            DataHolder.currentEntry = playlistModel
             val inten = Intent(this, EntryEditorActivity::class.java)
             startActivity(inten)
             //launchFileIntent(fileModel)

@@ -60,7 +60,7 @@ class SystemsFragment : Fragment(), OnItemClickListener {
 
         val systemModel = obj as JsonClasses.RASystem
         Log.d("TAG", "${systemModel.name}")
-        DataHolder.getInstance().currentSystem = systemModel
+        DataHolder.currentSystem = systemModel
         val action = SystemsFragmentDirections.actionSystemsFragmentToPlaylistFragment()
         this.view!!.findNavController().navigate(action)
     }

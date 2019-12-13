@@ -39,7 +39,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_playlist, container, false)
         binding.fab.setOnClickListener { onFabClick() }
         if (savedInstanceState == null) {
-            val PATH = "/storage/emulated/0/RetroArch/playlists/${DataHolder.getInstance().currentSystem!!.system[0]}.lpl"
+            val PATH = "/storage/emulated/0/RetroArch/playlists/${DataHolder.currentSystem!!.system[0]}.lpl"
             var newplaylist:JsonClasses.RAPlaylist
             try {
                 newplaylist = PlaylistLoader.loadPlaylist(PATH)
@@ -48,7 +48,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
             {
                 //playlist does not exist?
                 Log.d("PlLiFra", "Making New Playlist for $PATH")
-                Toast.makeText(this.context, "Making new Playlist for ${DataHolder.getInstance().currentSystem!!.system[0]}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context, "Making new Playlist for ${DataHolder.currentSystem!!.system[0]}", Toast.LENGTH_SHORT).show()
                 val newList = File(PATH)
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 newplaylist = JsonClasses.RAPlaylist()
@@ -63,9 +63,9 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
                 .add(R.id.container, playlistListFragment)
                 //.addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
                 .commit()
-            DataHolder.getInstance().currentPlaylist = newplaylist
+            DataHolder.currentPlaylist = newplaylist
         }
-        if (DataHolder.getInstance().currentEntry != null)
+        if (DataHolder.currentEntry != null)
         {
 
         }
@@ -100,7 +100,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         val playlistModel = obj as JsonClasses.RAPlaylistEntry
         Log.d("TAG", "${playlistModel.label}")
         val ac = PlaylistFragmentDirections.actionPlaylistFragmentToEntryEditorFragment()
-        DataHolder.getInstance().currentEntry = playlistModel
+        DataHolder.currentEntry = playlistModel
         this.findNavController().navigate(ac)
     }
 

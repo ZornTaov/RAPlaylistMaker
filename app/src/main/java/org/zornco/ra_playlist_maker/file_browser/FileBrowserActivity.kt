@@ -3,6 +3,7 @@ package org.zornco.ra_playlist_maker.file_browser
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
+import android.preference.PreferenceManager
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -30,15 +31,20 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
         window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
 
         if (savedInstanceState == null) {
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+            val useAllExt = sharedPreferences.getBoolean("use_all_ext", false)
+            DataHolder.currentStoragePath = sharedPreferences.getString("list_preference_1", DataHolder.storageRoots[0])!!
             val filesListFragment =
                 FilesListFragment.build {
-                    path = Environment.getExternalStorageDirectory().absolutePath
-                    extensions = DataHolder.currentSystem!!.allExt.toTypedArray()
+                    path = DataHolder.currentStoragePath
+                    extensions = (if (useAllExt || DataHolder.currentSystem!!.systemExt.isEmpty())
+                                    DataHolder.currentSystem!!.allExt else DataHolder.currentSystem!!.systemExt
+                                 ).toTypedArray()
                 }
 
             this.supportFragmentManager.beginTransaction()
                 .add(R.id.container, filesListFragment)
-                .addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
+                .addToBackStack(DataHolder.currentStoragePath)
                 .commit()
             initViews()
             initBackStack()
@@ -63,8 +69,7 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
         (this as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
 
         binding.breadcrumbRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        mBreadcrumbRecyclerAdapter =
-            BreadcrumbRecyclerAdapter()
+        mBreadcrumbRecyclerAdapter = BreadcrumbRecyclerAdapter()
         binding.breadcrumbRecyclerView.adapter = mBreadcrumbRecyclerAdapter
         mBreadcrumbRecyclerAdapter.onItemClickListener = {
             this.supportFragmentManager.popBackStack(it.path, 2)
@@ -78,7 +83,7 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
         backStackManager.onStackChangeListener = {
             updateAdapterData(it)
         }
-        backStackManager.addToStack(fileModel ?: FileModel(Environment.getExternalStorageDirectory().absolutePath, FileType.FOLDER, "/", 0.0))
+        backStackManager.addToStack(fileModel ?: FileModel(DataHolder.currentStoragePath, FileType.FOLDER, "/", 0.0))
     }
     private fun updateAdapterData(files: List<FileModel>) {
         mBreadcrumbRecyclerAdapter.updateData(files)
@@ -117,6 +122,7 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
         val filesListFragment =
             FilesListFragment.build {
                 path = fileModel.path
+                extensions = DataHolder.currentSystem!!.allExt.toTypedArray()
             }
         backStackManager.addToStack(fileModel)
         this.supportFragmentManager.beginTransaction()

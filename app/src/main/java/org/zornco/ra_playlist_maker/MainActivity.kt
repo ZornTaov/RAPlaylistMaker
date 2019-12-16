@@ -1,9 +1,11 @@
 package org.zornco.ra_playlist_maker
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -16,8 +18,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationView
+import org.zornco.ra_playlist_maker.common.DataHolder
 import org.zornco.ra_playlist_maker.file_browser.IOnBackPressed
 import org.zornco.ra_playlist_maker.common.OnItemClickListener
+import org.zornco.ra_playlist_maker.common.SettingsActivity
 import org.zornco.ra_playlist_maker.databinding.ActivityMainBinding
 import java.io.*
 
@@ -39,18 +43,25 @@ class MainActivity : AppCompatActivity(),
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
+
         checkPermission(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             STORAGE_PERMISSION_CODE)
+
         checkPermission(
             Manifest.permission.INTERNET,
             INTERNET_PERMISSION_CODE)
-        //binding.textView.text = Build.SUPPORTED_ABIS[0]
+
         drawerLayout = binding.drawerLayout
         val navController = this.findNavController(R.id.myNavHostFragment)
         NavigationUI.setupWithNavController(binding.navView, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-        //binding.navView.setNavigationItemSelectedListener(this)
+        binding.navView.setNavigationItemSelectedListener(this)
+        val paths = getExternalFilesDirs(null)
+        paths.forEach{
+            //this is disgusting, but it works...
+            DataHolder.storageRoots.add(it.parentFile.parentFile.parentFile.parent)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -119,7 +130,6 @@ class MainActivity : AppCompatActivity(),
             {
                 this.finish()
             }
-            //super.onBackPressed()
         }
         else
         {
@@ -129,8 +139,9 @@ class MainActivity : AppCompatActivity(),
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.FileBrowserFragment -> {
-                Toast.makeText(this, "Publication", Toast.LENGTH_SHORT).show()
+            R.id.settings -> {
+                val inten = Intent(this, SettingsActivity::class.java)
+                startActivity(inten)
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)

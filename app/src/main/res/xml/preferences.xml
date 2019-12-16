@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="use_all_ext"
+        android:summary="If using a file with a different extension than normal for a system, turn this on."
+        android:title="Use All Extensions" />
+    <ListPreference
+        android:key="list_preference_1"
+        android:title="List preference"
+        android:dialogTitle="Application language"
+        android:summary="Select the Application language"
+        />
+</PreferenceScreen>

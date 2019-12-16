@@ -1,6 +1,8 @@
 package org.zornco.ra_playlist_maker.playlist
 
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
@@ -106,8 +108,22 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onLongClick(obj: Any) {
-        DataHolder.currentPlaylist!!.items.removeAt(DataHolder.playlistIndex)
-        updatePlaylist()
+        val dialogBuilder = AlertDialog.Builder(this.activity)
+
+        // set message of alert dialog
+        dialogBuilder.setMessage("Do you want to delete this entry?")
+            .setCancelable(false)
+            .setPositiveButton("Delete") { _, _ ->
+                DataHolder.currentPlaylist!!.items.removeAt(DataHolder.playlistIndex)
+                updatePlaylist()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+
+        val alert = dialogBuilder.create()
+        alert.show()
+
     }
 
     fun onFabClick() {

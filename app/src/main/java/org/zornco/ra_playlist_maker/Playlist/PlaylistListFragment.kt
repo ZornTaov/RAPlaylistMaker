@@ -2,12 +2,14 @@ package org.zornco.ra_playlist_maker.playlist
 
 
 import android.content.Context
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_playlist_list.*
@@ -20,17 +22,20 @@ import java.io.File
 import java.io.FileNotFoundException
 import kotlin.Exception
 import com.google.gson.GsonBuilder
-
+import org.zornco.ra_playlist_maker.common.ListChangeBroadcastReceiver
 
 
 class PlaylistListFragment : Fragment() {
-
+    private lateinit var mListChangeBroadcastReceiver: ListChangeBroadcastReceiver
     private lateinit var mFilesAdapter: PlaylistRecyclerAdapter
     private lateinit var mCallback: OnItemClickListener
     lateinit var playlist: JsonClasses.RAPlaylist
+    lateinit var playlistName: String
 
     companion object {
         private const val ARG_PLAYLIST: String = "org.zornco.ra_playlist_maker.systems.playlist"
+        private const val ARG_PLAYLIST_NAME: String = "org.zornco.ra_playlist_maker.systems.playlist.name"
+        const val BROADCAST_EVENT: String = "org.zornco.ra_playlist_maker.playlist.playlist_change_broadcast"
         fun build(block: Builder.() -> Unit) = Builder().apply(block).build()
     }
 
@@ -40,7 +45,7 @@ class PlaylistListFragment : Fragment() {
         fun build(): PlaylistListFragment {
             val fragment = PlaylistListFragment()
             val args = Bundle()
-
+            args.putString(ARG_PLAYLIST_NAME, playlist.PATH.substringAfterLast("/"))
             args.putParcelable(ARG_PLAYLIST, playlist)
             fragment.arguments = args
             return fragment
@@ -58,15 +63,38 @@ class PlaylistListFragment : Fragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val name = arguments?.getString(ARG_PLAYLIST_NAME)
+        val playlist = arguments?.getParcelable<JsonClasses.RAPlaylist>(ARG_PLAYLIST)
+        if (playlist == null) {
+            Toast.makeText(context, "Playlist should not be null!", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (name == null) {
+            Toast.makeText(context, "Name should not be null!", Toast.LENGTH_SHORT).show()
+            return
+        }
+        this.playlist = playlist
+        playlistName = name
+        mListChangeBroadcastReceiver = ListChangeBroadcastReceiver(playlistName) {
+            updateDate()
+        }
+        context?.registerReceiver(mListChangeBroadcastReceiver, IntentFilter(BROADCAST_EVENT))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        context?.unregisterReceiver(mListChangeBroadcastReceiver)
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_playlist_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        playlist = arguments?.getParcelable<JsonClasses.RAPlaylist>(ARG_PLAYLIST)!!
-
         initViews()
     }
 

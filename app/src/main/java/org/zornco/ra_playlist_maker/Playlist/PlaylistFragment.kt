@@ -1,6 +1,7 @@
 package org.zornco.ra_playlist_maker.playlist
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -18,11 +19,9 @@ import com.google.gson.GsonBuilder
 import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
 import org.zornco.ra_playlist_maker.R
+import org.zornco.ra_playlist_maker.common.*
 import org.zornco.ra_playlist_maker.databinding.FragmentPlaylistBinding
-import org.zornco.ra_playlist_maker.common.BackStackManager
-import org.zornco.ra_playlist_maker.common.BreadcrumbRecyclerAdapter
-import org.zornco.ra_playlist_maker.common.DataHolder
-import org.zornco.ra_playlist_maker.common.OnItemClickListener
+import org.zornco.ra_playlist_maker.file_browser.FileBrowserActivity
 import org.zornco.ra_playlist_maker.libretro.PlaylistLoader
 import java.io.File
 
@@ -30,7 +29,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentPlaylistBinding
     //private val backStackManager = BackStackManager<JsonClasses.RAPlaylistEntry>()
     //private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<JsonClasses.RAPlaylistEntry>
-
+    private lateinit var playlistListFragment: PlaylistListFragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,7 +55,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
                 newList.writer().close()
             }
             newplaylist.PATH = PATH
-            val playlistListFragment =
+            playlistListFragment =
                 PlaylistListFragment.build {
                     playlist = newplaylist
                 }
@@ -100,17 +99,33 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
     override fun onClick(obj: Any) {
         val playlistModel = obj as JsonClasses.RAPlaylistEntry
         Log.d("TAG", "${playlistModel.label}")
-        val ac = PlaylistFragmentDirections.actionPlaylistFragmentToEntryEditorFragment()
+        DataHolder.currentState = if(DataHolder.currentPlaylist!!.items.isEmpty() )PlaylistState.FIRST else PlaylistState.EDIT
         DataHolder.currentEntry = playlistModel
-        this.findNavController().navigate(ac)
+        val inten = Intent(this.activity, EntryEditorActivity::class.java)
+        startActivityForResult(inten,101)
     }
 
     override fun onLongClick(obj: Any) {
-
+        DataHolder.currentPlaylist!!.items.removeAt(DataHolder.playlistIndex)
+        updatePlaylist()
     }
 
     fun onFabClick() {
-        val ac = PlaylistFragmentDirections.actionPlaylistFragmentToFileBrowserActivity()
-        this.findNavController().navigate(ac)
+//        val ac = PlaylistFragmentDirections.actionPlaylistFragmentToFileBrowserActivity()
+//        this.findNavController().navigate(ac)
+        DataHolder.currentState = PlaylistState.ADD
+        val inten = Intent(this.activity, FileBrowserActivity::class.java)
+        startActivityForResult(inten,101)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        updatePlaylist()
+    }
+    fun updatePlaylist(){
+        val broadcastIntent = Intent()
+        broadcastIntent.action = PlaylistListFragment.BROADCAST_EVENT
+        broadcastIntent.putExtra(ListChangeBroadcastReceiver.EXTRA_PATH, playlistListFragment.playlistName)
+        this.activity?.sendBroadcast(broadcastIntent)
     }
 }

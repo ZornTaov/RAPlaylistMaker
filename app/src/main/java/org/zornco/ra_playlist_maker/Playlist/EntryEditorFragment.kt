@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import com.google.gson.Gson
 import org.zornco.ra_playlist_maker.MainActivity
 import org.zornco.ra_playlist_maker.common.DataHolder
+import org.zornco.ra_playlist_maker.common.PlaylistState
 import org.zornco.ra_playlist_maker.databinding.FragmentEntryEditorBinding
 import java.io.File
 import java.io.FileWriter
@@ -29,18 +30,18 @@ class EntryEditorFragment : Fragment() {
         return binding.root
     }
     private fun onDoneClick() {
-        if (DataHolder.currentPlaylist!!.items.isEmpty()) {
-            DataHolder.currentPlaylist!!.items.add(binding.entry!!)
-            DataHolder.playlistIndex++
-        }
-        else {
-            if (this.activity is MainActivity)
-                DataHolder.currentPlaylist!!.items[DataHolder.playlistIndex] = binding.entry!!
-            else
-                DataHolder.currentPlaylist!!.items.add(binding.entry!!)
-        }
+
+        when (DataHolder.currentState)
         {
+            PlaylistState.FIRST -> {
+                DataHolder.currentPlaylist!!.items.add(binding.entry!!)
+                DataHolder.playlistIndex++
+            }
+            PlaylistState.ADD -> DataHolder.currentPlaylist!!.items.add(binding.entry!!)
+            PlaylistState.EDIT -> DataHolder.currentPlaylist!!.items[DataHolder.playlistIndex] = binding.entry!!
         }
+
+        this.activity!!.finish()
     }
 
 }

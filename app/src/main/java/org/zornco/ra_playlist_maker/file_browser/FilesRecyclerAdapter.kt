@@ -55,12 +55,12 @@ class FilesRecyclerAdapter : RecyclerView.Adapter<FilesRecyclerAdapter.ViewHolde
             if (fileModel.fileType == FileType.FOLDER) {
                 itemView.folderTextView.visibility = View.VISIBLE
                 itemView.totalSizeTextView.visibility = View.GONE
-                itemView.folderTextView.text = "(${fileModel.subFiles} files)"
+                itemView.folderTextView.text = itemView.context.getString(R.string.folder_text, fileModel.subFiles)
                 itemView.setBackgroundColor(0xEEEEEE)
             } else {
                 itemView.folderTextView.visibility = View.GONE
                 itemView.totalSizeTextView.visibility = View.VISIBLE
-                itemView.totalSizeTextView.text = "${String.format("%.2f", fileModel.sizeInMB)} mb"
+                itemView.totalSizeTextView.text = itemView.context.getString(R.string.total_size_text, fileModel.sizeInMB)
             }
         }
     }

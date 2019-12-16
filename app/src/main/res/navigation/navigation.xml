@@ -15,26 +15,10 @@
             app:destination="@id/playlistFragment" />
     </fragment>
     <fragment
-        android:id="@+id/entryEditorFragment"
-        android:name="org.zornco.ra_playlist_maker.playlist.EntryEditorFragment"
-        android:label="fragment_entry_editor"
-        tools:layout="@layout/fragment_entry_editor" >
-        <action
-            android:id="@+id/action_entryEditorFragment_to_playlistFragment"
-            app:destination="@id/playlistFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/playlistFragment"
         android:name="org.zornco.ra_playlist_maker.playlist.PlaylistFragment"
         android:label="PlaylistFragment"
-        tools:layout="@layout/fragment_playlist" >
-        <action
-            android:id="@+id/action_playlistFragment_to_entryEditorFragment"
-            app:destination="@id/entryEditorFragment" />
-        <action
-            android:id="@+id/action_playlistFragment_to_fileBrowserActivity"
-            app:destination="@id/fileBrowserActivity" />
-    </fragment>
+        tools:layout="@layout/fragment_playlist" />
     <activity
         android:id="@+id/fileBrowserActivity"
         android:name="org.zornco.ra_playlist_maker.file_browser.FileBrowserActivity"

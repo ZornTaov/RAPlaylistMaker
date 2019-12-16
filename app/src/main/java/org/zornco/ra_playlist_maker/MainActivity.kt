@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity(),
         val paths = getExternalFilesDirs(null)
         paths.forEach{
             //this is disgusting, but it works...
+            //paths back from /storage/emulated/0/Android/data/org.zornco.ra_playlist.maker/files to get the root of the drive.
             DataHolder.storageRoots.add(it.parentFile.parentFile.parentFile.parent)
         }
     }

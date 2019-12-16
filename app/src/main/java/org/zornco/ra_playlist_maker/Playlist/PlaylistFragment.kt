@@ -43,6 +43,7 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
                 Log.d("PlLiFra", "Making New Playlist for $path")
                 Toast.makeText(this.context, "Making new Playlist for ${DataHolder.currentSystem!!.system[0]}", Toast.LENGTH_SHORT).show()
                 val newList = File(path)
+                newList.parentFile.mkdirs()
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 newplaylist = JsonClasses.RAPlaylist()
                 newList.writeText(gson.toJson( newplaylist ))

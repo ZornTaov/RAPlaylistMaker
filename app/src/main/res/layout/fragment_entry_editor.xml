@@ -84,7 +84,7 @@
             android:hint="@string/game_name_hint"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="@{entry.label}"
+            android:text="@={entry.label}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/labelText"
             app:layout_constraintTop_toBottomOf="@+id/labelText" />
@@ -98,7 +98,7 @@
             android:hint="@string/path"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="@{entry.path}"
+            android:text="@={entry.path}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/pathText"
             app:layout_constraintTop_toBottomOf="@+id/pathText" />
@@ -112,7 +112,7 @@
             android:hint="@string/core_name"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="@{entry.core_name}"
+            android:text="@={entry.core_name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/coreNameText"
             app:layout_constraintTop_toBottomOf="@+id/coreNameText" />
@@ -126,7 +126,7 @@
             android:hint="@string/core_path"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="@{entry.core_path}"
+            android:text="@={entry.core_path}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/corePathText"
             app:layout_constraintTop_toBottomOf="@+id/corePathText" />
@@ -140,7 +140,7 @@
             android:hint="@string/crc32"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="@{entry.crc32}"
+            android:text="@={entry.crc32}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/crcText"
             app:layout_constraintTop_toBottomOf="@+id/crcText" />
@@ -154,7 +154,7 @@
             android:hint="@string/database_name"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="@{entry.db_name}"
+            android:text="@={entry.db_name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/dbText"
             app:layout_constraintTop_toBottomOf="@+id/dbText" />

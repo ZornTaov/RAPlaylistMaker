@@ -17,8 +17,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".playlist.EntryEditorActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".playlist.EntryEditorActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -30,7 +31,7 @@
         </activity>
         <activity
             android:name=".file_browser.FileBrowserActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name=".file_browser.GenericFileProvider"

@@ -112,8 +112,6 @@ class CoreInfoParser {
 
             }
             zipinfo.close()
-            //if (coreinfos.count() > 0)
-            //    Log.d("TAG", "${coreinfos.count()}")
 
             // from coreinfos, build systems.json
             val systemList = mutableMapOf<String, JsonClasses.RASystem>()
@@ -143,10 +141,6 @@ class CoreInfoParser {
                     }
                 }
             }
-            //val gson = Gson()
-            //val systems = createTempFile(context, "system", "json")
-            //systems.writeText(gson.toJson(systemList))
-            //Log.d("systemList", systemList.count().toString())
             cachedSystemList = systemList
             return systemList
         }

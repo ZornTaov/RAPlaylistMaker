@@ -20,9 +20,6 @@ import org.zornco.ra_playlist_maker.common.OnItemClickListener
 
 class SystemsFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentSystemsBinding
-    //private val backStackManager = BackStackManager<JsonClasses.RASystem>()
-    //private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<JsonClasses.RASystem>
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,35 +28,15 @@ class SystemsFragment : Fragment(), OnItemClickListener {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_systems, container, false)
         initViews()
-        initBackStack()
         return binding.root
     }
     private fun initViews()
     {
         (this.activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-
-//        binding.breadcrumbRecyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-//        mBreadcrumbRecyclerAdapter =
-//            BreadcrumbRecyclerAdapter()
-//        binding.breadcrumbRecyclerView.adapter = mBreadcrumbRecyclerAdapter
-//        mBreadcrumbRecyclerAdapter.onItemClickListener = {
-//            this.activity?.supportFragmentManager?.popBackStack(it.name, 2)
-//            backStackManager.popFromStackTill(it)
-//        }
-    }
-
-    private fun initBackStack()
-    {
-//        backStackManager.onStackChangeListener = {
-//            updateAdapterData(it)
-//        }
-//        backStackManager.addToStack(fileModel = JsonClasses.RASystem("Systems"))
     }
 
     override fun onClick(obj: Any) {
-
         val systemModel = obj as JsonClasses.RASystem
-        Log.d("TAG", "${systemModel.name}")
         DataHolder.currentSystem = systemModel
         val action = SystemsFragmentDirections.actionSystemsFragmentToPlaylistFragment()
         this.view!!.findNavController().navigate(action)

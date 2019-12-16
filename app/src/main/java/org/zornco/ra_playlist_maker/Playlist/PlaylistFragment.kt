@@ -29,8 +29,6 @@ import java.io.File
 
 class PlaylistFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentPlaylistBinding
-    //private val backStackManager = BackStackManager<JsonClasses.RAPlaylistEntry>()
-    //private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<JsonClasses.RAPlaylistEntry>
     private lateinit var playlistListFragment: PlaylistListFragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,7 +61,6 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
                 }
             this.activity!!.supportFragmentManager.beginTransaction()
                 .add(R.id.container, playlistListFragment)
-                //.addToBackStack(Environment.getExternalStorageDirectory().absolutePath)
                 .commit()
             DataHolder.currentPlaylist = newplaylist
         }
@@ -73,34 +70,16 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         }
 
         initViews()
-        initBackStack()
         return binding.root
     }
 
     private fun initViews()
     {
         (this.activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-
-        //binding.breadcrumbRecyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-        //mBreadcrumbRecyclerAdapter = BreadcrumbRecyclerAdapter()
-        //binding.breadcrumbRecyclerView.adapter = mBreadcrumbRecyclerAdapter
-//        mBreadcrumbRecyclerAdapter.onItemClickListener = {
-//            this.activity?.supportFragmentManager?.popBackStack(it.label, 2)
-//            backStackManager.popFromStackTill(it)
-//        }
-    }
-
-    private fun initBackStack()
-    {
-//        backStackManager.onStackChangeListener = {
-//            updateAdapterData(it)
-//        }
-//        backStackManager.addToStack(fileModel = JsonClasses.RAPlaylistEntry("Playlist"))
     }
 
     override fun onClick(obj: Any) {
         val playlistModel = obj as JsonClasses.RAPlaylistEntry
-        Log.d("TAG", "${playlistModel.label}")
         DataHolder.currentState = if(DataHolder.currentPlaylist!!.items.isEmpty() )PlaylistState.FIRST else PlaylistState.EDIT
         DataHolder.currentEntry = playlistModel
         val inten = Intent(this.activity, EntryEditorActivity::class.java)
@@ -127,8 +106,6 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
     }
 
     fun onFabClick() {
-//        val ac = PlaylistFragmentDirections.actionPlaylistFragmentToFileBrowserActivity()
-//        this.findNavController().navigate(ac)
         DataHolder.currentState = PlaylistState.ADD
         val inten = Intent(this.activity, FileBrowserActivity::class.java)
         startActivityForResult(inten,101)

@@ -28,10 +28,6 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
             R.layout.activity_file_browser
         )
         window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-        //drawerLayout = binding.drawerLayout
-        //val navController = this.findNavController(R.id.myNavHostFragment)
-        //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-        //NavigationUI.setupWithNavController(binding.navView, navController)
 
         if (savedInstanceState == null) {
             val filesListFragment =
@@ -55,14 +51,6 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
             initViews()
             initBackStack(filemodel)
         }
-        //val gson = Gson()
-        //val systemList: List<JsonClasses.RASystem> = gson.fromJson(PlaylistLoader.loadJSONFromAsset("systems.json"), Array<JsonClasses.RASystem>::class.java).toList()
-        //val count = systemList.count()
-        //val build = Build.SUPPORTED_ABIS[0]
-
-        /*val json:JSONArray = PlaylistLoader.load(this)
-        val text = findViewById<TextView>(R.id.textview)
-        text.text = json.length().toString()*/
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -109,13 +97,10 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
         else
         {
             val playlistModel: JsonClasses.RAPlaylistEntry = JsonClasses.RAPlaylistEntry(path = fileModel.path, label = fileModel.name)
-            Log.d("TAG", "${playlistModel.label}")
             DataHolder.currentEntry = playlistModel
             val inten = Intent(this, EntryEditorActivity::class.java)
             startActivityForResult(inten,101)
-            //launchFileIntent(fileModel)
         }
-        Log.d("TAG", "${fileModel.path}")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

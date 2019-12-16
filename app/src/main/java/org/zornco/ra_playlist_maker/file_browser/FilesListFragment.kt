@@ -92,7 +92,6 @@ class FilesListFragment : Fragment() {
         } else {
             emptyFolderLayout.visibility = View.INVISIBLE
         }
-
         mFilesAdapter.updateData(files, EXTENSIONS)
     }
 

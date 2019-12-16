@@ -39,15 +39,7 @@ class EntryEditorFragment : Fragment() {
             else
                 DataHolder.currentPlaylist!!.items.add(binding.entry!!)
         }
-        val gson = Gson()
-        val file = File(DataHolder.currentPlaylist!!.PATH)
-        file.writeText(gson.toJson(DataHolder.currentPlaylist))
-        try {
-            val action = EntryEditorFragmentDirections.actionEntryEditorFragmentToPlaylistFragment()
-            this.view!!.findNavController().navigate(action)
-        }catch (ex: Exception)
         {
-            this.activity!!.finish()
         }
     }
 

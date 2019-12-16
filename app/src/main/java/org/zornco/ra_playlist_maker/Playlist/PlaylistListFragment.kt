@@ -92,6 +92,7 @@ class PlaylistListFragment : Fragment() {
         }
 
         mFilesAdapter.updateData(playlist.items)
+        PlaylistLoader.savePlaylist(playlist)
     }
 
     private fun getEntriesFromPlaylist(playlist : MutableList<JsonClasses.RAPlaylistEntry>): List<JsonClasses.RAPlaylistEntry> {

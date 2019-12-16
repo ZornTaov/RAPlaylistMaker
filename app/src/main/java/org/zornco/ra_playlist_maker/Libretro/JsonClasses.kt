@@ -3,7 +3,6 @@ package org.zornco.ra_playlist_maker.libretro
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
-
 class JsonClasses {
 
     @Parcelize

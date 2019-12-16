@@ -1,6 +1,5 @@
 package org.zornco.ra_playlist_maker.common
 
-
 class BackStackManager<T>
 {
     private var stack = mutableListOf<T>()
@@ -23,6 +22,7 @@ class BackStackManager<T>
         }
         onStackChangeListener?.invoke(stack)
     }
+
     fun popFromStackTill(t: T)
     {
         stack = stack.subList(0,stack.indexOf(t)+1)

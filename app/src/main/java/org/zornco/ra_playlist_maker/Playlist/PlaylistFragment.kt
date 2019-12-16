@@ -1,11 +1,8 @@
 package org.zornco.ra_playlist_maker.playlist
 
-
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,9 +11,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 import org.zornco.ra_playlist_maker.libretro.JsonClasses
 
@@ -38,23 +32,23 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_playlist, container, false)
         binding.fab.setOnClickListener { onFabClick() }
         if (savedInstanceState == null) {
-            val PATH = "/storage/emulated/0/RetroArch/playlists/${DataHolder.currentSystem!!.system[0]}.lpl"
+            val path = "/storage/emulated/0/RetroArch/playlists/${DataHolder.currentSystem!!.system[0]}.lpl"
             var newplaylist:JsonClasses.RAPlaylist
             try {
-                newplaylist = PlaylistLoader.loadPlaylist(PATH)
+                newplaylist = PlaylistLoader.loadPlaylist(path)
             }
             catch (e:Exception)
             {
                 //playlist does not exist?
-                Log.d("PlLiFra", "Making New Playlist for $PATH")
+                Log.d("PlLiFra", "Making New Playlist for $path")
                 Toast.makeText(this.context, "Making new Playlist for ${DataHolder.currentSystem!!.system[0]}", Toast.LENGTH_SHORT).show()
-                val newList = File(PATH)
+                val newList = File(path)
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 newplaylist = JsonClasses.RAPlaylist()
                 newList.writeText(gson.toJson( newplaylist ))
                 newList.writer().close()
             }
-            newplaylist.PATH = PATH
+            newplaylist.PATH = path
             playlistListFragment =
                 PlaylistListFragment.build {
                     playlist = newplaylist
@@ -64,11 +58,6 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
                 .commit()
             DataHolder.currentPlaylist = newplaylist
         }
-        if (DataHolder.currentEntry != null)
-        {
-
-        }
-
         initViews()
         return binding.root
     }
@@ -102,10 +91,9 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
 
         val alert = dialogBuilder.create()
         alert.show()
-
     }
 
-    fun onFabClick() {
+    private fun onFabClick() {
         DataHolder.currentState = PlaylistState.ADD
         val inten = Intent(this.activity, FileBrowserActivity::class.java)
         startActivityForResult(inten,101)
@@ -115,7 +103,8 @@ class PlaylistFragment : Fragment(), OnItemClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         updatePlaylist()
     }
-    fun updatePlaylist(){
+
+    private fun updatePlaylist(){
         val broadcastIntent = Intent()
         broadcastIntent.action = PlaylistListFragment.BROADCAST_EVENT
         broadcastIntent.putExtra(ListChangeBroadcastReceiver.EXTRA_PATH, playlistListFragment.playlistName)

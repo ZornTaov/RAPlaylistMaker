@@ -84,7 +84,7 @@ class FilesListFragment : Fragment() {
         }
     }
 
-    fun updateDate() {
+    private fun updateDate() {
         val files = getFileModelsFromFiles(getFilesFromPath(PATH))
 
         if (files.isEmpty()) {
@@ -94,5 +94,4 @@ class FilesListFragment : Fragment() {
         }
         mFilesAdapter.updateData(files, EXTENSIONS)
     }
-
 }

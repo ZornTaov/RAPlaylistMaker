@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -19,7 +18,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationView
 import org.zornco.ra_playlist_maker.common.DataHolder
-import org.zornco.ra_playlist_maker.file_browser.IOnBackPressed
+import org.zornco.ra_playlist_maker.common.IOnBackPressed
 import org.zornco.ra_playlist_maker.common.OnItemClickListener
 import org.zornco.ra_playlist_maker.common.SettingsActivity
 import org.zornco.ra_playlist_maker.databinding.ActivityMainBinding
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity(),
     OnItemClickListener,
     NavigationView.OnNavigationItemSelectedListener
 {
-
     lateinit var binding : ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private val STORAGE_PERMISSION_CODE = 101
@@ -68,9 +66,7 @@ class MainActivity : AppCompatActivity(),
         val navController = this.findNavController(R.id.myNavHostFragment)
         return NavigationUI.navigateUp(navController, drawerLayout)
     }
-    fun InputStream.toFile(path: String) {
-        File(path).outputStream().use { this.copyTo(it) }
-    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -82,6 +78,7 @@ class MainActivity : AppCompatActivity(),
             }
         }
     }
+
     private fun checkPermission(permission: String, requestCode: Int) {
         if (ContextCompat.checkSelfPermission(
                 this@MainActivity,
@@ -104,7 +101,6 @@ class MainActivity : AppCompatActivity(),
                 .show()
         }*/
     }
-
 
     override fun onClick(obj: Any) {
         val fragment = this.supportFragmentManager.findFragmentById(R.id.myNavHostFragment) as? NavHostFragment

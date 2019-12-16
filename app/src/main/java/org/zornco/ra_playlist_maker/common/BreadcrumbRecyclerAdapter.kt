@@ -28,7 +28,6 @@ class BreadcrumbRecyclerAdapter<T> : RecyclerView.Adapter<BreadcrumbRecyclerAdap
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-
         init {
             itemView.setOnClickListener(this)
         }

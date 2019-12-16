@@ -1,29 +1,21 @@
 package org.zornco.ra_playlist_maker.playlist
 
-
 import android.content.Context
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_playlist_list.*
 import org.zornco.ra_playlist_maker.libretro.JsonClasses
 import org.zornco.ra_playlist_maker.libretro.PlaylistLoader
-import org.zornco.ra_playlist_maker.MainActivity
 import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.common.OnItemClickListener
-import java.io.File
-import java.io.FileNotFoundException
 import kotlin.Exception
-import com.google.gson.GsonBuilder
 import org.zornco.ra_playlist_maker.common.ListChangeBroadcastReceiver
-
 
 class PlaylistListFragment : Fragment() {
     private lateinit var mListChangeBroadcastReceiver: ListChangeBroadcastReceiver
@@ -112,7 +104,6 @@ class PlaylistListFragment : Fragment() {
     }
 
     private fun updateDate() {
-
         if (playlist.items.isEmpty()) {
             emptyPlaylistLayout.visibility = View.VISIBLE
         } else {
@@ -121,18 +112,5 @@ class PlaylistListFragment : Fragment() {
 
         mFilesAdapter.updateData(playlist.items)
         PlaylistLoader.savePlaylist(playlist)
-    }
-
-    private fun getEntriesFromPlaylist(playlist : MutableList<JsonClasses.RAPlaylistEntry>): List<JsonClasses.RAPlaylistEntry> {
-        return playlist.map {
-            JsonClasses.RAPlaylistEntry(
-                it.path,
-                it.label,
-                it.core_path,
-                it.core_name,
-                it.crc32,
-                it.db_name
-            )
-        }
     }
 }

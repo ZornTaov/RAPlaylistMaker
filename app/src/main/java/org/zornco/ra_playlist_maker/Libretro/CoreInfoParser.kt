@@ -18,9 +18,7 @@ class CoreInfoParser {
     companion object {
         private var cachedSystemList: MutableMap<String, JsonClasses.RASystem>? = null
 
-
-        private fun createTempFile(context: Context, name: String, type: String): File
-        {
+        private fun createTempFile(context: Context, name: String, type: String): File {
             val externalCache = context.externalCacheDir
             val internalCache = context.cacheDir
             val cacheDir: File
@@ -33,6 +31,7 @@ class CoreInfoParser {
             }
             return File(cacheDir, "$name.$type")
         }
+
         fun cacheSystems(context: MainActivity): MutableMap<String, JsonClasses.RASystem>{
             if (cachedSystemList != null)
             {
@@ -43,7 +42,7 @@ class CoreInfoParser {
             // only redownload and cache once a day
             if (TimeUnit.DAYS.convert(Calendar.getInstance().time.time - coreList.lastModified(), TimeUnit.MILLISECONDS)> 1) {
                 val task =
-                    CoreInfoParser.Companion.DownloadTask(context)
+                    DownloadTask(context)
                         .execute("http://buildbot.libretro.com/nightly/android/latest/${Build.SUPPORTED_ABIS[0]}/.index")
                         .get()
                 var index = 0
@@ -67,7 +66,7 @@ class CoreInfoParser {
             // only redownload and cache once a day
             if (TimeUnit.DAYS.convert(Calendar.getInstance().time.time - infozip.lastModified(), TimeUnit.MILLISECONDS)> 1) {
 
-                val info = CoreInfoParser.Companion.DownloadTask(context)
+                val info = DownloadTask(context)
                     .execute("http://buildbot.libretro.com/assets/frontend/info.zip")
                     .get() as ByteArrayOutputStream
                 infozip.outputStream().write(info.toByteArray())
@@ -145,8 +144,6 @@ class CoreInfoParser {
             return systemList
         }
 
-
-
         // download buffer size
         const  val BUFFER_SIZE:Int = 8192
         private class DownloadTask(context: MainActivity) : AsyncTask<String, Int, OutputStream>() {
@@ -178,18 +175,21 @@ class CoreInfoParser {
                 // return the stream as String
                 return result
             }
+
             override fun onPreExecute() {
                 super.onPreExecute()
                 val activity = activityReference.get()
                 if (activity == null || activity.isFinishing) return
                 activity.binding.progressBar.visibility = View.VISIBLE
             }
+
             override fun onPostExecute(result: OutputStream?) {
                 super.onPostExecute(result)
                 val activity = activityReference.get()
                 if (activity == null || activity.isFinishing) return
                 activity.binding.progressBar.visibility = View.GONE
             }
+
             override fun onProgressUpdate(vararg values: Int?) {
                 super.onProgressUpdate(*values)
                 // we always make sure that the the below operation will not throw null pointer exception

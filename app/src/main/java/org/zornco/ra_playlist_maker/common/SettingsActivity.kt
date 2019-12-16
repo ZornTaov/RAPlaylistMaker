@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import org.zornco.ra_playlist_maker.R
-import androidx.preference.Preference
-
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -17,7 +15,6 @@ class SettingsActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.settings, SettingsFragment())
             .commit()
-        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
@@ -34,7 +31,6 @@ class SettingsActivity : AppCompatActivity() {
 
         private fun setListPreferenceData(lp: ListPreference) {
             val entries = DataHolder.storageRoots.toTypedArray<CharSequence>()
-            val entryValues = arrayOf<CharSequence>("0", "1")
             lp.entries = entries
             lp.entryValues = entries
             lp.setDefaultValue(DataHolder.storageRoots[0])

@@ -2,24 +2,20 @@ package org.zornco.ra_playlist_maker.file_browser
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.preference.PreferenceManager
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.zornco.ra_playlist_maker.libretro.JsonClasses
 import android.util.Log
 import org.zornco.ra_playlist_maker.playlist.EntryEditorActivity
-//import org.zornco.ra_playlist_maker.Playlist.EntryEditorActivity
 import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.common.*
 import org.zornco.ra_playlist_maker.databinding.ActivityFileBrowserBinding
 
 class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var binding : ActivityFileBrowserBinding
-    private lateinit var drawerLayout: DrawerLayout
     private val backStackManager = BackStackManager<FileModel>()
     private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<FileModel>
 
@@ -64,6 +60,7 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
         Log.d("saveInst", backStackManager.top.name)
         outState.putParcelable("Top",backStackManager.top)
     }
+
     private fun initViews()
     {
         (this as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
@@ -85,6 +82,7 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
         }
         backStackManager.addToStack(fileModel ?: FileModel(DataHolder.currentStoragePath, FileType.FOLDER, "/", 0.0))
     }
+
     private fun updateAdapterData(files: List<FileModel>) {
         mBreadcrumbRecyclerAdapter.updateData(files)
         if (files.isNotEmpty())
@@ -131,7 +129,6 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
             .commit()
     }
 
-
     override fun onBackPressed() {
         super.onBackPressed()
         backStackManager.popFromStack()
@@ -141,6 +138,4 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
         }
 
     }
-
-
 }

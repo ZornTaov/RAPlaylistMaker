@@ -9,11 +9,11 @@ class ListChangeBroadcastReceiver (val path: String, val onChange: () -> Unit) :
     companion object {
         const val EXTRA_PATH = "org.zornco.ra_playlist_maker.common.path"
     }
+
     override fun onReceive(context: Context?, intent: Intent?) {
         val filePath = intent?.extras?.getString(EXTRA_PATH)
         if (filePath.equals(path)) {
             onChange.invoke()
         }
     }
-
 }

@@ -1,6 +1,5 @@
 package org.zornco.ra_playlist_maker.systems
 
-
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -79,6 +78,4 @@ class SystemsListFragment : Fragment() {
             )
         }
     }
-
-
 }

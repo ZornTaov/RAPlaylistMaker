@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
 import com.google.gson.Gson
+import org.zornco.ra_playlist_maker.BR
 import org.zornco.ra_playlist_maker.MainActivity
+import org.zornco.ra_playlist_maker.common.CRC
 import org.zornco.ra_playlist_maker.common.DataHolder
 import org.zornco.ra_playlist_maker.common.PlaylistState
 import org.zornco.ra_playlist_maker.databinding.FragmentEntryEditorBinding
@@ -27,6 +30,8 @@ class EntryEditorFragment : Fragment() {
         if(binding.entry!!.db_name.isEmpty())
             binding.entry!!.db_name = DataHolder.currentPlaylist!!.PATH.substringAfterLast('/')
         binding.doneButton.setOnClickListener{onDoneClick() }
+        binding.crcButton.setOnClickListener{onCRCClick() }
+        binding.lifecycleOwner = this
         return binding.root
     }
     private fun onDoneClick() {
@@ -42,6 +47,13 @@ class EntryEditorFragment : Fragment() {
         }
 
         this.activity!!.finish()
+    }
+
+    private fun onCRCClick() {
+        binding.apply { entry?.crc32 = "${"%X".format(CRC.getCRC(binding.entry!!.path))}|crc" }
+        binding.notifyPropertyChanged(BR.entry)
+        binding.invalidateAll()
+        Toast.makeText(this.activity, "CRC Updated!", Toast.LENGTH_SHORT).show()
     }
 
 }

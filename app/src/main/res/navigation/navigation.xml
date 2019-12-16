@@ -39,7 +39,7 @@
         android:id="@+id/fileBrowserActivity"
         android:name="org.zornco.ra_playlist_maker.file_browser.FileBrowserActivity"
         android:label="FileBrowserActivity"
-        tools:layout="@layout/file_browser">
+        tools:layout="@layout/activity_file_browser">
     </activity>
     <activity
         android:id="@+id/entryEditorActivity"

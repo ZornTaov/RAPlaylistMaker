@@ -14,10 +14,10 @@ import org.zornco.ra_playlist_maker.playlist.EntryEditorActivity
 //import org.zornco.ra_playlist_maker.Playlist.EntryEditorActivity
 import org.zornco.ra_playlist_maker.R
 import org.zornco.ra_playlist_maker.common.*
-import org.zornco.ra_playlist_maker.databinding.FileBrowserBinding
+import org.zornco.ra_playlist_maker.databinding.ActivityFileBrowserBinding
 
 class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
-    private lateinit var binding : FileBrowserBinding
+    private lateinit var binding : ActivityFileBrowserBinding
     private lateinit var drawerLayout: DrawerLayout
     private val backStackManager = BackStackManager<FileModel>()
     private lateinit var mBreadcrumbRecyclerAdapter: BreadcrumbRecyclerAdapter<FileModel>
@@ -25,7 +25,7 @@ class FileBrowserActivity : AppCompatActivity(), OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,
-            R.layout.file_browser
+            R.layout.activity_file_browser
         )
         window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.or(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
         //drawerLayout = binding.drawerLayout
